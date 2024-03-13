@@ -55,13 +55,14 @@ private extension CreateTrackerViewController {
     
     @objc func habitButtonTapped() {
         
-        let newHabitVC = NewHabitViewController()
-        
+        let newHabitVC = NewHabitViewController.init(trackType: .regular)
         navigationController?.pushViewController(newHabitVC, animated: true)
     }
     
     @objc func nonRegularButtonTapped() {
+        let newHabitVC = NewHabitViewController.init(trackType: .unregularTask)
         
+        navigationController?.pushViewController(newHabitVC, animated: true)
     }
 }
 

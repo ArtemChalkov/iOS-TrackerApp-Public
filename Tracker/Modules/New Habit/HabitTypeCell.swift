@@ -5,7 +5,7 @@
 
 import UIKit
 
-class HabitTypeCell: UITableViewCell {
+final class HabitTypeCell: UITableViewCell {
     
     static let reuseId = "HabitTypeCell"
     static let height: CGFloat = 75

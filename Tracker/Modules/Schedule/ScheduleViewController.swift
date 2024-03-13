@@ -6,9 +6,21 @@
 
 import UIKit
 
+enum Weekday: String, CaseIterable {
+    case monday = "Понедельник"
+    case tuesday = "Вторник"
+    case wednesday = "Среда"
+    case thursday = "Четверг"
+    case friday = "Пятница"
+    case saturday = "Суббота"
+    case sunday = "Воскресенье"
+}
+
 final class ScheduleViewController: UIViewController {
 
-    var days: [String] = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"]
+    lazy var days: [String] = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"]
+    
+    var trackerService = TrackerService.shared
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
@@ -52,6 +64,12 @@ private extension ScheduleViewController {
     
     @objc func doneButtonTapped() {
         
+        if let tracker = trackerService.currentTracker {
+            trackerService.append(tracker)
+            print("->", trackerService.categories)
+        }
+        NotificationCenter.default.post(name: Notification.Name("UpdateTrackersScreen"), object: nil, userInfo: nil)
+        dismiss(animated: true)
     }
 }
 
@@ -91,6 +109,27 @@ extension ScheduleViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ScheduleCell.reuseId, for: indexPath) as? ScheduleCell else { return UITableViewCell() }
         let day = days[indexPath.row]
         cell.update(day)
+        
+        cell.onDaySwitchChanged = { [weak self] (day, dayIsChoosen) in
+            
+            guard let self else { return }
+            
+            guard let weekday = Weekday(rawValue: day) else { return }
+            
+            var tracker = self.trackerService.currentTracker
+            
+            if dayIsChoosen {
+                tracker?.schedule.append(weekday)
+            } else {
+                tracker?.schedule.removeAll(where: { $0 == weekday })
+            }
+            
+            self.trackerService.currentTracker = tracker
+            
+            print("->", tracker?.schedule)
+            
+        }
+        
         return cell
     }
     

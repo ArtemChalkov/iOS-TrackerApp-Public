@@ -5,7 +5,9 @@
 
 import UIKit
 
-class TextFieldWithPadding: UITextField {
+
+
+final class TextFieldWithPadding: UITextField {
     var textPadding = UIEdgeInsets(
         top: 0,
         left: 16,
@@ -24,12 +26,38 @@ class TextFieldWithPadding: UITextField {
     }
 }
 
+enum TrackType: Int, CaseIterable {
+    case regular //habit
+    case unregularTask
+}
+
 final class NewHabitViewController: UIViewController {
     
-    var habitTypes: [String] = ["Категория", "Расписание"]
+    var trackerService = TrackerService.shared
     
-    //private var habitTextView = HabitTextView()
+    var habitTypes: [String] = []
     
+    var trackType: TrackType
+
+    
+    init(trackType: TrackType) {
+        self.trackType = trackType
+        
+        super.init(nibName: nil, bundle: nil)
+        
+        switch trackType {
+            
+        case .regular:
+            habitTypes = ["Категория", "Расписание"]
+        case .unregularTask:
+            habitTypes = ["Категория"]
+        }
+        
+       
+    }
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     private var createButton: UIButton = {
         let button = UIButton()
@@ -42,7 +70,7 @@ final class NewHabitViewController: UIViewController {
         button.clipsToBounds = true
         button.translatesAutoresizingMaskIntoConstraints = false
         button.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        //button.addTarget(nil, action: #selector(createButtonTapped), for: .touchUpInside)
+        button.addTarget(nil, action: #selector(createButtonTapped), for: .touchUpInside)
         
         return button
     }()
@@ -58,7 +86,7 @@ final class NewHabitViewController: UIViewController {
         button.clipsToBounds = true
         button.translatesAutoresizingMaskIntoConstraints = false
         button.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        //button.addTarget(nil, action: #selector(cancelButtonTapped), for: .touchUpInside)
+        button.addTarget(nil, action: #selector(cancelButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -71,10 +99,7 @@ final class NewHabitViewController: UIViewController {
         return stackView
     }()
     
-   
-    
-    
-    private var habitTextField: TextFieldWithPadding = {
+    private lazy var habitTextField: TextFieldWithPadding = {
         let textField = TextFieldWithPadding()
         textField.placeholder = "Введите название трекера"
         textField.heightAnchor.constraint(equalToConstant: 75).isActive = true
@@ -82,6 +107,7 @@ final class NewHabitViewController: UIViewController {
         textField.layer.cornerRadius = 16
         textField.clipsToBounds = true
         textField.backgroundColor = Colors.lightGray
+        textField.delegate = self
         return textField
     }()
     
@@ -109,12 +135,84 @@ final class NewHabitViewController: UIViewController {
         setupViews()
         setupConstraints()
         setupNavigationItems()
+        
+        //addTapGestureToHideKeyboard()
     }
 }
 
-//MARK: - Navigation
+//MARK: - Event Handler
 private extension NewHabitViewController {
     
+    @objc func cancelButtonTapped() {
+        
+        dismiss(animated: true)
+    }
+    
+    @objc func createButtonTapped() {
+        
+        createHabit()
+    }
+    
+    func createHabit() {
+        let trackerName = habitTextField.text ?? ""
+        let randomUUID = UUID()
+        let randomColor = Colors.randomColor()
+        let randomEmoji = Emojis.randomEmoji()
+        let tracker = Tracker(id: randomUUID, name: trackerName, color: randomColor, emoji: randomEmoji, schedule: [])
+        print("->", tracker)
+        trackerService.currentTracker = tracker
+    }
+}
+
+extension NewHabitViewController: UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print("->", habitTypes.count)
+        return habitTypes.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: HabitTypeCell.reuseId, for: indexPath) as? HabitTypeCell else { return UITableViewCell() }
+        let type = habitTypes[indexPath.row]
+        cell.update(type)
+        cell.accessoryType = .disclosureIndicator
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return HabitTypeCell.height
+    }
+    
+}
+
+extension NewHabitViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        switch indexPath.row {
+        case 0:
+            print("index row = 0")
+            
+        case 1:
+            createHabit()
+            let scheduleVC = ScheduleViewController()
+            self.navigationController?.pushViewController(scheduleVC, animated: true)
+            
+        default: break
+        }
+    }
+}
+
+//MARK: - UITextFieldDelegate
+extension NewHabitViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        view.endEditing(true)
+        return false
+    }
 }
 
 private extension NewHabitViewController {
@@ -140,15 +238,21 @@ private extension NewHabitViewController {
             habitTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
             habitTextField.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16),
             habitTextField.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16),
-            //habitTextField.heightAnchor.constraint(equalToConstant: 75)
         ])
         
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: habitTextField.bottomAnchor, constant: 24),
             tableView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16),
             tableView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16),
-            tableView.heightAnchor.constraint(equalToConstant: 148)
         ])
+        
+        switch trackType {
+        case .regular:
+            tableView.heightAnchor.constraint(equalToConstant: 148).isActive = true
+        case .unregularTask:
+            tableView.heightAnchor.constraint(equalToConstant: 75).isActive = true
+            tableView.separatorStyle = .none
+        }
         
         NSLayoutConstraint.activate([
             buttonsStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0),
@@ -159,41 +263,3 @@ private extension NewHabitViewController {
     }
 }
 
-extension NewHabitViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return habitTypes.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: HabitTypeCell.reuseId, for: indexPath) as? HabitTypeCell else { return UITableViewCell() }
-        
-        let type = habitTypes[indexPath.row]
-        cell.update(type)
-        cell.accessoryType = .disclosureIndicator
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return HabitTypeCell.height
-    }
-    
-}
-
-extension NewHabitViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        switch indexPath.row {
-        case 0:
-            break
-            
-        case 1:
-            
-            let scheduleVC = ScheduleViewController()
-            
-            self.navigationController?.pushViewController(scheduleVC, animated: true)
-            
-        default: break
-        }
-    }
-}

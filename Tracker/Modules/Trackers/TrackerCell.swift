@@ -5,9 +5,16 @@
 
 import UIKit
 
-class TrackerCell: UICollectionViewCell {
-        
+final class TrackerCell: UICollectionViewCell {
+    
     static let identifier = "TrackerCell"
+    
+    private var tracker: Tracker?
+    private var isComplete = false
+    
+    private var calendarDate = Date()
+    
+    var onTrackerStatusChanged: ((Tracker, Bool)->Void)?
     
     private var containerView: UIView = {
         let view = UIView()
@@ -19,12 +26,14 @@ class TrackerCell: UICollectionViewCell {
         return view
     }()
     
-    private var iconImageView: UIImageView = {
-        let view = UIImageView()
-        view.image = UIImage(named: "icon-1")
-        view.heightAnchor.constraint(equalToConstant: 24).isActive = true
-        view.widthAnchor.constraint(equalToConstant: 24).isActive = true
-        return view
+    private var iconButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("", for: .normal)
+        button.layer.cornerRadius = 12
+        button.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        button.widthAnchor.constraint(equalToConstant: 24).isActive = true
+        button.backgroundColor = .white.withAlphaComponent(0.3)
+        return button
     }()
     
     private var nameLabel: UILabel = {
@@ -44,12 +53,18 @@ class TrackerCell: UICollectionViewCell {
     }()
     
     private var plusButton: UIButton = {
-        let view = UIButton()
-        view.setImage(UIImage(named: "plus-button"), for: .normal)
-        view.setImage(UIImage(named: "done-button"), for: .selected)
-        view.addTarget(nil, action: #selector(plusButtonTapped(_:)), for: .touchUpInside)
-        return view
+        let button = UIButton(type: .custom)
+        button.setImage(UIImage(systemName: "plus"), for: .normal)
+        button.widthAnchor.constraint(equalToConstant: 34).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 34).isActive = true
+        button.layer.cornerRadius = 17
+        button.addTarget(nil, action: #selector(plusButtonTapped(_:)), for: .touchUpInside)
+        button.tintColor = .white
+        return button
     }()
+    
+    
+  
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -62,7 +77,7 @@ class TrackerCell: UICollectionViewCell {
     
     func setupViews() {
 
-        [containerView, iconImageView, nameLabel, dayLabel, plusButton].forEach { view in
+        [containerView, iconButton, nameLabel, dayLabel, plusButton].forEach { view in
             view.translatesAutoresizingMaskIntoConstraints = false
             contentView.addSubview(view)
         }
@@ -76,12 +91,12 @@ class TrackerCell: UICollectionViewCell {
         ])
         
         NSLayoutConstraint.activate([
-            iconImageView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 12),
-            iconImageView.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 12)
+            iconButton.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 12),
+            iconButton.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 12)
         ])
         
         NSLayoutConstraint.activate([
-            nameLabel.topAnchor.constraint(equalTo: iconImageView.bottomAnchor, constant: 8),
+            nameLabel.topAnchor.constraint(equalTo: iconButton.bottomAnchor, constant: 8),
             nameLabel.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 12),
             nameLabel.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: 12),
             nameLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -12)
@@ -98,9 +113,59 @@ class TrackerCell: UICollectionViewCell {
         ])
     }
     
+    func update(_ tracker: Tracker, counter: Int = 0, isComplete: Bool = false, calendarDate: Date) {
+        self.isComplete = isComplete
+        self.calendarDate = calendarDate
+        
+        plusButton.isSelected = isComplete
+        
+        if plusButton.isSelected {
+            
+            plusButton.setImage(UIImage(systemName: "checkmark"), for: .normal)
+            plusButton.layer.opacity = 0.3
+            
+        } else {
+            plusButton.setImage(UIImage(systemName: "plus"), for: .normal)
+            plusButton.layer.opacity = 1
+        }
+        
+        self.tracker = tracker
+        nameLabel.text = tracker.name
+        containerView.backgroundColor = tracker.color
+        
+        dayLabel.text = "\(counter) дня"
+        iconButton.setTitle(tracker.emoji, for: .normal)
+        
+        //plusButton.tintColor = tracker.color
+        plusButton.backgroundColor = tracker.color
+        
+        
+        
+    }
+    
     @objc func plusButtonTapped(_ sender: UIButton) {
+        
+        if calendarDate > Date() {
+            return
+        }
+        
+        
+        guard let tracker = tracker else { return }
         
         sender.isSelected = !sender.isSelected
         
+        if sender.isSelected {
+            
+            sender.setImage(UIImage(systemName: "checkmark"), for: .normal)
+            sender.layer.opacity = 0.3
+            
+        } else {
+            sender.setImage(UIImage(systemName: "plus"), for: .normal)
+            sender.layer.opacity = 1
+        }
+        
+        let trackerStatus = sender.isSelected
+        
+        onTrackerStatusChanged?(tracker, trackerStatus)
     }
 }

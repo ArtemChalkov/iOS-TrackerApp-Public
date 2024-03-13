@@ -5,21 +5,31 @@
 
 import UIKit
 
+
+struct Emojis {
+    
+    static func randomEmoji() -> String {
+        let emojis = [ "🍇", "🍈", "🍉", "🍊", "🍋", "🍌", "🍍", "🥭", "🍎", "🍏", "🍐", "🍒", "🍓", "🫐", "🥝", "🍅", "🫒", "🥥", "🥑", "🍆", "🥔", "🥕", "🌽", "🌶️", "🫑", "🥒", "🥬", "🥦", "🧄", "🧅", "🍄"]
+        
+        return emojis.randomElement()!
+    }
+}
+
 struct Tracker {
-    let id: UInt //название, цвет, эмоджи и распиcание.
+    let id: UUID //название, цвет, эмоджи и распиcание.
     let name: String
     let color: UIColor
     let emoji: String
-    let schedule: Date
-    
+    //var schedule: Date?
+    var schedule: [Weekday] = []
 }
 
 struct TrackerCategory {
     let name: String
-    let array: [Tracker]
+    var array: [Tracker]
 }
 
 struct TrackerRecord {
-    let id: UInt
+    let id: UUID
     let date: Date
 }
