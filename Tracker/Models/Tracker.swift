@@ -17,7 +17,7 @@ struct Emojis {
 
 struct Tracker {
     let id: UUID //название, цвет, эмоджи и распиcание.
-    let name: String
+    var name: String
     let color: UIColor
     let emoji: String
     //var schedule: Date?

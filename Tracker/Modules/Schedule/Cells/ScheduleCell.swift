@@ -65,9 +65,16 @@ extension ScheduleCell {
 
 //MARK: - Public
 extension ScheduleCell {
-    func update(_ day: String) {
+    func update(_ day: String, _ schedule: [Weekday]) {
         self.day = day
         dayLabel.text = day
+        
+        for weekday in schedule {
+            
+            if weekday.rawValue == day {
+                daySwitch.isOn = true
+            }
+        }
     }
 }
 

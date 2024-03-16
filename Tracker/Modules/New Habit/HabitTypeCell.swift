@@ -18,7 +18,28 @@ final class HabitTypeCell: UITableViewCell {
         label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         return label
     }()
-
+    
+    private let scheduleLabel: UILabel = {
+        let label = UILabel()
+        //label.text = ""
+        label.textColor = Colors.gray
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .left
+        label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+        return label
+    }()
+    
+    private var verticalStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.distribution = .fill
+        //stackView.spacing = 2
+        stackView.isLayoutMarginsRelativeArrangement = true
+        stackView.layoutMargins = UIEdgeInsets(top: 8, left: 0, bottom: 12, right: 0)
+        stackView.axis = .vertical
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupStyles()
@@ -33,8 +54,17 @@ final class HabitTypeCell: UITableViewCell {
 
 //MARK: - Public
 extension HabitTypeCell {
-    func update(_ type: String) {
+    func update(_ type: String, _ weekday: [Weekday]) {
         typeLabel.text = type
+        
+        if type == "Расписание" {
+            var values: [String] = []
+            for day in weekday {
+                let value = day.shortDay()
+                values.append(value)
+            }
+            scheduleLabel.text = values.joined(separator: ", ")
+        }
     }
 }
 
@@ -49,13 +79,19 @@ extension HabitTypeCell {
     }
     
     func setupViews() {
-        contentView.addSubview(typeLabel)
+        contentView.addSubview(verticalStackView)
+        
+        verticalStackView.addArrangedSubview(typeLabel)
+        verticalStackView.addArrangedSubview(scheduleLabel)
     }
     
     func setupConstraints() {
-        typeLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
-        typeLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: 0).isActive = true
-        contentView.heightAnchor.constraint(equalToConstant: HabitTypeCell.height).isActive = true
+        verticalStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0).isActive = true
+        verticalStackView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
+        verticalStackView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: 0).isActive = true
+        verticalStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0).isActive = true
+        //typeLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: 0).isActive = true
+        //contentView.heightAnchor.constraint(equalToConstant: HabitTypeCell.height).isActive = true
     }
 }
 

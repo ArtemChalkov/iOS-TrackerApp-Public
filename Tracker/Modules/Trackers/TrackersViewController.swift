@@ -5,7 +5,6 @@
 
 import UIKit
 
-
 final class TrackerService {
     
     var currentTracker: Tracker?
@@ -21,7 +20,12 @@ final class TrackerService {
     var completedTrackers: [TrackerRecord] = []
     
     func append(_ tracker: Tracker) {
-        categories[0].array.append(tracker)
+        
+        if let index = categories[0].array.firstIndex(where: { $0.id == tracker.id}) {
+            categories[0].array[index] = tracker
+        } else {
+            categories[0].array.append(tracker)
+        }
     }
     
     func remove(_ tracker: Tracker) {

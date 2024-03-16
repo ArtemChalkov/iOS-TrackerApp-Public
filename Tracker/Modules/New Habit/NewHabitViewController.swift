@@ -127,7 +127,7 @@ private extension NewHabitViewController {
         switch trackType {
         case .regular:
             if let textCount =  textField.text?.count, let schedule = regularTracker?.schedule {
-                if textCount > 0, schedule.count > 0 {
+               if textCount > 0, schedule.count > 0 {
                     createButton.isUserInteractionEnabled = true
                     createButton.backgroundColor = Colors.black
                 } else {
@@ -154,7 +154,40 @@ private extension NewHabitViewController {
     }
     
     @objc func createButtonTapped() {
-        createHabit()
+                
+        if trackType == .unregularTask {
+            
+            createHabit()
+            
+            if let tracker = trackerService.currentTracker {
+                trackerService.append(tracker)
+                print("->", trackerService.categories)
+                NotificationCenter.default.post(name: Notification.Name("UpdateTrackersScreen"), object: nil, userInfo: nil)
+                dismiss(animated: true)
+            }
+        }
+        
+        if trackType == .regular {
+            if regularTracker != nil {
+                
+                if let text = habitTextField.text {
+                    regularTracker?.name = text
+                    
+                    if let tracker = regularTracker {
+                        trackerService.append(tracker)
+                    }
+                }
+                
+                print("->", regularTracker?.name)
+                
+                //trackerService.append(tracker)
+                print("->", trackerService.categories)
+                NotificationCenter.default.post(name: Notification.Name("UpdateTrackersScreen"), object: nil, userInfo: nil)
+                dismiss(animated: true)
+            }
+        }
+        
+        trackerService.currentTracker = nil
     }
     
     func createHabit() {
@@ -165,25 +198,6 @@ private extension NewHabitViewController {
         let tracker = Tracker(id: randomUUID, name: trackerName, color: randomColor, emoji: randomEmoji, schedule: [])
         print("->", tracker)
         trackerService.currentTracker = tracker
-        
-        if trackType == .unregularTask {
-            if let tracker = trackerService.currentTracker {
-                trackerService.append(tracker)
-                print("->", trackerService.categories)
-                NotificationCenter.default.post(name: Notification.Name("UpdateTrackersScreen"), object: nil, userInfo: nil)
-                dismiss(animated: true)
-            }
-        }
-        
-        if trackType == .regular {
-            if let tracker = regularTracker {
-                //trackerService.append(tracker)
-                print("->", trackerService.categories)
-                NotificationCenter.default.post(name: Notification.Name("UpdateTrackersScreen"), object: nil, userInfo: nil)
-                dismiss(animated: true)
-            }
-            
-        }
     }
 }
 
@@ -202,7 +216,10 @@ extension NewHabitViewController: UITableViewDataSource {
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: HabitTypeCell.reuseId, for: indexPath) as? HabitTypeCell else { return UITableViewCell() }
         let type = habitTypes[indexPath.row]
-        cell.update(type)
+        
+        let schedule = regularTracker?.schedule ?? []
+        
+        cell.update(type, schedule)
         cell.accessoryType = .disclosureIndicator
         return cell
     }
@@ -221,13 +238,20 @@ extension NewHabitViewController: UITableViewDelegate {
             print("index row = 0")
             
         case 1:
-            createHabit()
+            
+            if trackerService.currentTracker == nil {
+                createHabit()
+            }
+            
+            let schedule = regularTracker?.schedule ?? []
+            
             let scheduleVC = ScheduleViewController()
             
             scheduleVC.onTrackerChanged = { [weak self] tracker in
                 guard let self else { return }
                 
                 self.regularTracker = tracker
+                self.trackerService.currentTracker = tracker
                 
                 if let textCount =  self.habitTextField.text?.count, let schedule = self.regularTracker?.schedule {
                     if textCount > 0, schedule.count > 0 {
@@ -239,10 +263,10 @@ extension NewHabitViewController: UITableViewDelegate {
                     }
                 }
                 
+                tableView.reloadData()
             }
-            
-            
             self.navigationController?.pushViewController(scheduleVC, animated: true)
+            scheduleVC.update(schedule)
             
         default: break
         }
@@ -267,8 +291,6 @@ private extension NewHabitViewController {
         case .unregularTask:
             navigationItem.title = "Новое нерегулярное событие"
         }
-        
-       
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16, weight: .medium)]
     }
     

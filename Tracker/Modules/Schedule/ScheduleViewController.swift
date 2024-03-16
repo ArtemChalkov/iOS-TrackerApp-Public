@@ -14,13 +14,42 @@ enum Weekday: String, CaseIterable {
     case friday = "Пятница"
     case saturday = "Суббота"
     case sunday = "Воскресенье"
+    
+    func shortDay() -> String {
+        switch self {
+        case .monday: return "Пн"
+        case .tuesday: return "Вт"
+        case .wednesday: return "Ср"
+        case .thursday: return "Чт"
+        case .friday: return "Пт"
+        case .saturday: return "Сб"
+        case .sunday: return "Вс"
+        }
+    }
+    
+    func index() -> Int {
+        switch self {
+        case .monday: return 0
+        case .tuesday: return 1
+        case .wednesday: return 2
+        case .thursday: return 3
+        case .friday: return 4
+        case .saturday: return 5
+        case .sunday: return 6
+        }
+    }
 }
 
 final class ScheduleViewController: UIViewController {
 
+    
+    //var array: [Weekday] = [.sunday, .monday].sorted { $0.index() < $1.index() }
+    
     lazy var days: [String] = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"]
     
-    var trackerService = TrackerService.shared
+    private var trackerService = TrackerService.shared
+    
+    private var schedule: [Weekday] = []
     
     var onTrackerChanged: ((Tracker)->())?
     
@@ -63,11 +92,22 @@ final class ScheduleViewController: UIViewController {
     }
 }
 
+extension ScheduleViewController {
+    
+    func update(_ schedule: [Weekday]) {
+        self.schedule = schedule
+        tableView.reloadData()
+    }
+}
+
 private extension ScheduleViewController {
     
     @objc func doneButtonTapped() {
         
         if let tracker = trackerService.currentTracker {
+            
+            //if trackerService.categories.
+            
             trackerService.append(tracker)
             print("->", trackerService.categories)
             NotificationCenter.default.post(name: Notification.Name("UpdateTrackersScreen"), object: nil, userInfo: nil)
@@ -115,8 +155,10 @@ extension ScheduleViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ScheduleCell.reuseId, for: indexPath) as? ScheduleCell else { return UITableViewCell() }
+        
         let day = days[indexPath.row]
-        cell.update(day)
+        
+        cell.update(day, schedule)
         
         cell.onDaySwitchChanged = { [weak self] (day, dayIsChoosen) in
             
@@ -131,6 +173,9 @@ extension ScheduleViewController: UITableViewDataSource {
             } else {
                 tracker?.schedule.removeAll(where: { $0 == weekday })
             }
+            
+            
+            tracker?.schedule.sort(by: { $0.index() < $1.index() })
             
             self.trackerService.currentTracker = tracker
             
