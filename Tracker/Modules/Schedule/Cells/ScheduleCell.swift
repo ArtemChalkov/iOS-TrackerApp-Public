@@ -5,15 +5,20 @@
 
 import UIKit
 
-class ScheduleCell: UITableViewCell {
+final class ScheduleCell: UITableViewCell {
     
     static let reuseId = "ScheduleCell"
     
     static let height: CGFloat = 75
     
+    private var day: String?
+    
+    var onDaySwitchChanged: ((String, Bool)->())?
+    
     private let dayLabel: UILabel = {
         let label = UILabel()
         label.text = "Понедельник"
+        label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .left
         return label
@@ -23,6 +28,12 @@ class ScheduleCell: UITableViewCell {
         let control = UISwitch()
         control.isOn = false
         control.translatesAutoresizingMaskIntoConstraints = false
+        //control.tintColor = Colors.blue
+        //control.backgroundColor = Colors.blue
+        
+        control.onTintColor = Colors.blue
+        
+        control.addTarget(nil, action: #selector(daySwitchChanged(_:)), for: .valueChanged)
         return control
     }()
     
@@ -38,9 +49,24 @@ class ScheduleCell: UITableViewCell {
     }
 }
 
+//MARK: - Event Handler
+
+extension ScheduleCell {
+    
+    @objc func daySwitchChanged(_ sender: UISwitch) {
+        
+        guard let day = self.day else { return }
+        
+        let dayIsChoosen = sender.isOn
+        
+        onDaySwitchChanged?(day, dayIsChoosen)
+    }
+}
+
 //MARK: - Public
 extension ScheduleCell {
     func update(_ day: String) {
+        self.day = day
         dayLabel.text = day
     }
 }

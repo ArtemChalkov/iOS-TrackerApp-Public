@@ -5,8 +5,8 @@
 
 import UIKit
 
-class HabitTextView: UIView {
-    // Placeholder
+final class HabitTextView: UIView {
+   
     let placeholderLabel: UILabel = {
         let label = UILabel()
         label.text = "Введите название трекера"
@@ -54,7 +54,6 @@ class HabitTextView: UIView {
     }
     
     func setupViews() {
-        //addSubview(placeholderLabel)
         addSubview(nameTextView)
     }
     func setupConstraints() {
@@ -65,19 +64,10 @@ class HabitTextView: UIView {
             nameTextView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 0),
             nameTextView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0),
         ])
-        
-//        NSLayoutConstraint.activate([
-//            placeholderLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 8),
-//            placeholderLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 5),
-//        ])
-        
-        //self.heightAnchor.constraint(equalToConstant: 75)
-        
     }
 }
 
 extension HabitTextView: UITextViewDelegate {
-    // UITextViewDelegate
     func textViewDidChange(_ textView: UITextView) {
         placeholderLabel.isHidden = !textView.text.isEmpty
     }

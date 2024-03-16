@@ -5,6 +5,11 @@
 
 import UIKit
 
+enum EmptyType {
+    case empty //Вообще нет трекеров
+    case error //Трекеры есть но по дате/поиску их нет
+}
+
 final class TrackersEmptyStateView: UIView {
     
     private var emptyStateImageView: UIImageView = {
@@ -19,6 +24,7 @@ final class TrackersEmptyStateView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Что будем отслеживать?"
+        label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
         return label
     }()
 
@@ -43,5 +49,17 @@ final class TrackersEmptyStateView: UIView {
         
         emptyStateLabel.topAnchor.constraint(equalTo: emptyStateImageView.bottomAnchor, constant: 8).isActive = true
         emptyStateLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+    }
+    
+    func update(_ type: EmptyType) {
+        
+        switch type {
+        case .empty:
+            emptyStateLabel.text = "Что будем отслеживать?"
+            emptyStateImageView.image = UIImage(named: "empty")
+        case .error:
+            emptyStateLabel.text = "Ничего не найдено"
+            emptyStateImageView.image = UIImage(named: "error")
+        }
     }
 }

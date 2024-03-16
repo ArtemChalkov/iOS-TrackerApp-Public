@@ -5,7 +5,7 @@
 
 import UIKit
 
-class HabitTypeCell: UITableViewCell {
+final class HabitTypeCell: UITableViewCell {
     
     static let reuseId = "HabitTypeCell"
     static let height: CGFloat = 75
@@ -15,6 +15,7 @@ class HabitTypeCell: UITableViewCell {
         label.text = "Расписание"
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .left
+        label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         return label
     }()
 

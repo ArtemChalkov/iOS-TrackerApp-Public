@@ -12,6 +12,7 @@ final class CreateTrackerViewController: UIViewController {
         let button = UIButton()
         button.backgroundColor = .black
         button.setTitle("Привычка", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         button.layer.cornerRadius = 16
         button.clipsToBounds = true
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -24,6 +25,7 @@ final class CreateTrackerViewController: UIViewController {
         let button = UIButton()
         button.backgroundColor = .black
         button.setTitle("Нерегулярное событие", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         button.layer.cornerRadius = 16
         button.clipsToBounds = true
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -55,13 +57,14 @@ private extension CreateTrackerViewController {
     
     @objc func habitButtonTapped() {
         
-        let newHabitVC = NewHabitViewController()
-        
+        let newHabitVC = NewHabitViewController.init(trackType: .regular)
         navigationController?.pushViewController(newHabitVC, animated: true)
     }
     
     @objc func nonRegularButtonTapped() {
+        let newHabitVC = NewHabitViewController.init(trackType: .unregularTask)
         
+        navigationController?.pushViewController(newHabitVC, animated: true)
     }
 }
 
@@ -69,6 +72,7 @@ private extension CreateTrackerViewController {
     
     func setupNavigationItems() {
         navigationItem.title = "Создание трекера"
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16, weight: .medium)]
     }
     
     func setupViews() {

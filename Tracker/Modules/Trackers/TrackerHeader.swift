@@ -10,7 +10,7 @@ final class TrackerHeader: UICollectionReusableView {
     
     private var headerLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 19)
+        label.font = UIFont.systemFont(ofSize: 19, weight: .bold)
         label.text = "Домашний уют"
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
