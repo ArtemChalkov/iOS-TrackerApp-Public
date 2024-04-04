@@ -30,11 +30,9 @@ final class TrackerHeader: UICollectionReusableView {
     }
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            headerLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 28),
+            headerLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 12),
             headerLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor)
         ])
-        
-       
     }
     
     func update(_ category: String) {

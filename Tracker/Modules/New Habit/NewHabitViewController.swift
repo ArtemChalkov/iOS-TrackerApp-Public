@@ -1,23 +1,56 @@
 //
-//  NewHabitViewController.swift
-//  Tracker
+//  ViewController.swift
+//  textfield-in-tableview
 //
+
 
 import UIKit
 
 enum TrackType: Int, CaseIterable {
     case regular //habit
-    case unregularTask //unregular
+    case unregular //unregular
+}
+
+enum NewHabitSection: Int, CaseIterable {
+    case name = 0
+    case habitType = 1
+    case emojis = 2
+    case colors = 3
+    case buttons = 4
 }
 
 final class NewHabitViewController: UIViewController {
     
-    var trackerService = TrackerService.shared
-    var habitTypes: [String] = []
-    var trackType: TrackType
+    //MARK: Data Models
+    private var habitTypes: [String] = [] //["Категория", "Расписание"]
+    private var trackType: TrackType
     
-    var regularTracker: Tracker?
-
+    //Трекер собираем c пустой модели
+    private var data: Tracker.Data = Tracker.Data() {
+        didSet {
+            checkFormValidation()
+        }
+    }
+    
+    //Кнопка создания трекера включена или выключена
+    private var isConfirmButtonEnabled: Bool = false {
+        didSet {
+            updateConfirmButtonInTableView()
+        }
+    }
+     
+    //Рандомная категория
+    private lazy var category: TrackerCategory? = trackerCategoryStore.categories.randomElement() {
+        didSet {
+            checkFormValidation()
+        }
+    }
+    
+    //MARK: Services
+    private let trackerCategoryStore = TrackerCategoryStore()
+    private let trackerStore = TrackerStore()
+    
+    
     init(trackType: TrackType) {
         self.trackType = trackType
         
@@ -26,71 +59,14 @@ final class NewHabitViewController: UIViewController {
         switch trackType {
         case .regular:
             habitTypes = ["Категория", "Расписание"]
-        case .unregularTask:
+        case .unregular:
             habitTypes = ["Категория"]
         }
-        
     }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    private var createButton: UIButton = {
-        let button = UIButton()
-        
-        button.backgroundColor = Colors.gray
-        button.setTitleColor(.white, for: .normal)
-        button.setTitle("Создать", for: .normal)
-        button.isUserInteractionEnabled = false
-        button.layer.cornerRadius = 16
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        button.clipsToBounds = true
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        button.addTarget(nil, action: #selector(createButtonTapped), for: .touchUpInside)
-        
-        return button
-    }()
-    
-    private var cancelButton: UIButton = {
-        let button = UIButton()
-        button.backgroundColor = .white
-        button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.red.cgColor
-        button.setTitleColor(.red, for: .normal)
-        button.setTitle("Отменить", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        button.layer.cornerRadius = 16
-        button.clipsToBounds = true
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        button.addTarget(nil, action: #selector(cancelButtonTapped), for: .touchUpInside)
-        return button
-    }()
-    
-    private var buttonsStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.distribution = .fillEqually
-        stackView.spacing = 16
-        stackView.axis = .horizontal
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
-    }()
-    
-    private lazy var habitTextField: TextFieldWithPadding = {
-        let textField = TextFieldWithPadding()
-        textField.placeholder = "Введите название трекера"
-        textField.addTarget(self, action: #selector(habitTextFieldChanged(_:)), for: .editingChanged)
-        textField.heightAnchor.constraint(equalToConstant: 75).isActive = true
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.layer.cornerRadius = 16
-        textField.clipsToBounds = true
-        textField.backgroundColor = Colors.lightGray
-        textField.delegate = self
-        textField.font = UIFont.systemFont(ofSize: 17, weight: .regular)
-        return textField
-    }()
-    
+
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.delegate = self
@@ -98,14 +74,18 @@ final class NewHabitViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
         tableView.contentInset = UIEdgeInsets(top: -1, left: 0, bottom: 0, right: 0) //фикс верхнего сепаратора
-        tableView.backgroundColor = Colors.lightGray
         tableView.layer.cornerRadius = 16
         tableView.clipsToBounds = true
-        tableView.isScrollEnabled = false
+        tableView.separatorStyle = .none
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        tableView.showsVerticalScrollIndicator = false
         
-        tableView.register(HabitTypeCell.self, forCellReuseIdentifier: HabitTypeCell.reuseId)
-        
+        tableView.register(HabitNameCell.self, forCellReuseIdentifier: HabitNameCell.reuseId)
+        tableView.register(EmojisCell.self, forCellReuseIdentifier: EmojisCell.reuseId)
+        tableView.register(ColorsCell.self, forCellReuseIdentifier: ColorsCell.reuseId)
+        tableView.register(CreateHabitCell.self, forCellReuseIdentifier: CreateHabitCell.reuseId)
+        tableView.register(HabitTypeContainerCell.self, forCellReuseIdentifier: HabitTypeContainerCell.reuseId)
+    
         return tableView
     }()
     
@@ -115,180 +95,198 @@ final class NewHabitViewController: UIViewController {
         setupViews()
         setupConstraints()
         setupNavigationItems()
-
+        
+        //addTapGestureToHideKeyboard()
     }
 }
 
-//MARK: - Event Handler
-private extension NewHabitViewController {
+//MARK: - Business Logic
+extension NewHabitViewController {
     
-    @objc func habitTextFieldChanged(_ textField: UITextField) {
+    private func checkFormValidation() {
+        if data.name.count == 0 {
+            isConfirmButtonEnabled = false
+            return
+        }
+//        if isValidationMessageVisible {
+//            isConfirmButtonEnabled = false
+//            return
+//        }
+        if category == nil || data.emoji == nil || data.color == nil {
+            isConfirmButtonEnabled = false
+            return
+        }
         
-        switch trackType {
-        case .regular:
-            if let textCount =  textField.text?.count, let schedule = regularTracker?.schedule {
-               if textCount > 0, schedule.count > 0 {
-                    createButton.isUserInteractionEnabled = true
-                    createButton.backgroundColor = Colors.black
-                } else {
-                    createButton.isUserInteractionEnabled = false
-                    createButton.backgroundColor = Colors.gray
-                }
-            }
-            
-        case .unregularTask:
-            if let textCount =  textField.text?.count {
-                if textCount > 0 {
-                    createButton.isUserInteractionEnabled = true
-                    createButton.backgroundColor = Colors.black
-                } else {
-                    createButton.isUserInteractionEnabled = false
-                    createButton.backgroundColor = Colors.gray
-                }
-            }
-        }
-    }
-    
-    @objc func cancelButtonTapped() {
-        dismiss(animated: true)
-    }
-    
-    @objc func createButtonTapped() {
-                
-        if trackType == .unregularTask {
-            
-            createHabit()
-            
-            if let tracker = trackerService.currentTracker {
-                trackerService.append(tracker)
-                print("->", trackerService.categories)
-                NotificationCenter.default.post(name: Notification.Name("UpdateTrackersScreen"), object: nil, userInfo: nil)
-                dismiss(animated: true)
-            }
-        }
+        print(data.schedule)
         
         if trackType == .regular {
-            if regularTracker != nil {
-                
-                if let text = habitTextField.text {
-                    regularTracker?.name = text
-                    
-                    if let tracker = regularTracker {
-                        trackerService.append(tracker)
-                    }
-                }
-                
-                print("->", regularTracker?.name)
-                
-                //trackerService.append(tracker)
-                print("->", trackerService.categories)
-                NotificationCenter.default.post(name: Notification.Name("UpdateTrackersScreen"), object: nil, userInfo: nil)
-                dismiss(animated: true)
+            let schedule = data.schedule ?? []
+            if schedule.isEmpty {
+                isConfirmButtonEnabled = false
+                return
             }
         }
         
-        trackerService.currentTracker = nil
+        isConfirmButtonEnabled = true
+        
+        print("-> Validation", isConfirmButtonEnabled)
     }
     
-    func createHabit() {
-        let trackerName = habitTextField.text ?? ""
-        let randomUUID = UUID()
-        let randomColor = Colors.randomColor()
-        let randomEmoji = Emojis.randomEmoji()
-        let tracker = Tracker(id: randomUUID, name: trackerName, color: randomColor, emoji: randomEmoji, schedule: [])
-        print("->", tracker)
-        trackerService.currentTracker = tracker
+    func updateConfirmButtonInTableView() {
+        
+        let sectionIndex = NewHabitSection.buttons.rawValue
+        let indexPath = IndexPath(row: 0, section: sectionIndex)
+        
+        self.tableView.reloadRows(at: [indexPath],
+                                  with: .fade)
     }
+    
+    
 }
 
+//MARK: - UITableViewDataSource
 extension NewHabitViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return NewHabitSection.allCases.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("->", habitTypes.count)
-        return habitTypes.count
+        return 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: HabitTypeCell.reuseId, for: indexPath) as? HabitTypeCell else { return UITableViewCell() }
-        let type = habitTypes[indexPath.row]
+        if let sectionType = NewHabitSection(rawValue: indexPath.section) {
+            
+            switch sectionType {
+                
+            case .name:
+                let cell = HabitNameCell.init(style: .default, reuseIdentifier: HabitNameCell.reuseId)
+                
+                cell.onNameHabitFieldChanged = { [weak self] nameText in
+                    
+                    self?.data.name = nameText
+                    print("->", self?.data)
+                }
+                
+                return cell
+                
+            case .habitType:
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: HabitTypeContainerCell.reuseId, for: indexPath) as? HabitTypeContainerCell else { return UITableViewCell() }
+                
+                cell.onCategoryCellSelected = {
+                    print("->", "Category")
+                }
+                
+                cell.onScheduleCellSelected = { [weak self] in
+                    print("->", "Schedule")
+                    
+                    self?.scheduleButtonTapped()
+                }
+                
+                cell.update(habitTypes)
+                
+                return cell
+                
+  
+            case .emojis:
+                
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: EmojisCell.reuseId, for: indexPath) as? EmojisCell else { return UITableViewCell() }
+                
+                cell.onEmojiCellSelected = { [weak self] emoji in
+                
+                    self?.data.emoji = emoji.symbol
+                    print("->", self?.data)
+                }
+                
+                return cell
+                
+            case .colors:
+                
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: ColorsCell.reuseId, for: indexPath) as? ColorsCell else { return UITableViewCell() }
+                
+                cell.onColorCellSelected = { [weak self] color in
+                    
+                    self?.data.color = color.color
+                    print("->", self?.data)
+                }
+                
+                return cell
+                
+            case .buttons:
+                
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: CreateHabitCell.reuseId, for: indexPath) as? CreateHabitCell else { return UITableViewCell() }
+                
+                cell.update(isConfirmButtonEnabled)
+                
+                cell.onCancelButtonTapped = {
+                    print("->", "Cancel")
+                }
+                
+                cell.onCreateButtonTapped = { [weak self] in
+                    
+                    guard let self else { return }
+                    print("->", "Create")
+                    self.createButtonTapped()
+                }
+                return cell
+            }
+        }
+        return UITableViewCell()
+    }
+}
+//MARK: - Event Handler
+extension NewHabitViewController {
+    
+    func scheduleButtonTapped() {
+        view.endEditing(true)
         
-        let schedule = regularTracker?.schedule ?? []
+        let schedule = self.data.schedule ?? []
+        let scheduleVC = ScheduleViewController()
+        scheduleVC.onScheduleChanged = { [weak self] schedule in
+            self?.data.schedule = schedule
+            print(self?.data)
+        }
+        self.navigationController?.pushViewController(scheduleVC, animated: true)
         
-        cell.update(type, schedule)
-        cell.accessoryType = .disclosureIndicator
-        return cell
+        scheduleVC.update(schedule)
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return HabitTypeCell.height
+    func createButtonTapped() {
+        
+        print("->", "Create")
+        
+        guard let category, let emoji = data.emoji, let color = data.color else { return }
+        
+        let newTracker = Tracker(
+            name: data.name,
+            emoji: emoji,
+            color: color,
+            daysCount: 0,
+            schedule: data.schedule
+        )
+        
+        try? trackerStore.addTracker(newTracker, with: category) //Будет добавлен в трекер если модели не пустые
+        
+        dismiss(animated: true)
     }
-    
 }
 
 extension NewHabitViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        switch indexPath.row {
-        case 0:
-            print("index row = 0")
-            
-        case 1:
-            
-            if trackerService.currentTracker == nil {
-                createHabit()
-            }
-            
-            let schedule = regularTracker?.schedule ?? []
-            
-            let scheduleVC = ScheduleViewController()
-            
-            scheduleVC.onTrackerChanged = { [weak self] tracker in
-                guard let self else { return }
-                
-                self.regularTracker = tracker
-                self.trackerService.currentTracker = tracker
-                
-                if let textCount =  self.habitTextField.text?.count, let schedule = self.regularTracker?.schedule {
-                    if textCount > 0, schedule.count > 0 {
-                        self.createButton.isUserInteractionEnabled = true
-                        self.createButton.backgroundColor = Colors.black
-                    } else {
-                        self.createButton.isUserInteractionEnabled = false
-                        self.createButton.backgroundColor = Colors.gray
-                    }
-                }
-                
-                tableView.reloadData()
-            }
-            self.navigationController?.pushViewController(scheduleVC, animated: true)
-            scheduleVC.update(schedule)
-            
-        default: break
-        }
-    }
+    
+   
 }
 
-//MARK: - UITextFieldDelegate
-extension NewHabitViewController: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        view.endEditing(true)
-        return false
-    }
-}
-
-private extension NewHabitViewController {
+//MARK: - Layout
+extension NewHabitViewController {
     
     func setupNavigationItems() {
         
         switch trackType {
         case .regular:
             navigationItem.title = "Новая привычка"
-        case .unregularTask:
+        case .unregular:
             navigationItem.title = "Новое нерегулярное событие"
         }
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16, weight: .medium)]
@@ -297,42 +295,15 @@ private extension NewHabitViewController {
     func setupViews() {
         navigationItem.setHidesBackButton(true, animated: true)
         view.backgroundColor = .systemBackground
-        view.addSubview(habitTextField)
+        view.backgroundColor = .white
         view.addSubview(tableView)
-        view.addSubview(buttonsStackView)
-        
-        buttonsStackView.addArrangedSubview(cancelButton)
-        buttonsStackView.addArrangedSubview(createButton)
     }
-    
     func setupConstraints() {
-        
         NSLayoutConstraint.activate([
-            habitTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
-            habitTextField.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16),
-            habitTextField.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16),
-        ])
-        
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: habitTextField.bottomAnchor, constant: 24),
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
             tableView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16),
             tableView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16),
-        ])
-        
-        switch trackType {
-        case .regular:
-            tableView.heightAnchor.constraint(equalToConstant: 148).isActive = true
-        case .unregularTask:
-            tableView.heightAnchor.constraint(equalToConstant: 75).isActive = true
-            tableView.separatorStyle = .none
-        }
-        
-        NSLayoutConstraint.activate([
-            buttonsStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0),
-            buttonsStackView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16),
-            buttonsStackView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16),
-            buttonsStackView.heightAnchor.constraint(equalToConstant: 60)
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -16)
         ])
     }
 }
-
