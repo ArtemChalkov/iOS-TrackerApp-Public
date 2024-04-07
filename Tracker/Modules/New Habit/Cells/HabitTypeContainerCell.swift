@@ -19,6 +19,18 @@ final class HabitTypeContainerCell: UITableViewCell {
         }
     }
     
+    private var schedule: [DayOfWeek] = [] {
+        didSet {
+            tableView.reloadData()
+        }
+    }
+    
+    private var categoryName: String = "" {
+        didSet {
+            tableView.reloadData()
+        }
+    }
+    
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.delegate = self
@@ -53,13 +65,14 @@ final class HabitTypeContainerCell: UITableViewCell {
 //MARK: - Public
 extension HabitTypeContainerCell {
     
-    func update(_ habitTypes: [String]) {
+    func update(_ habitTypes: [String], _ schedule: [DayOfWeek], _ categoryName: String) {
         self.habitTypes = habitTypes
+        self.schedule = schedule
+        self.categoryName = categoryName
         
         let height = CGFloat(habitTypes.count) * HabitTypeCell.height
         tableView.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
-    
 }
 
 extension HabitTypeContainerCell: UITableViewDataSource {
@@ -78,8 +91,12 @@ extension HabitTypeContainerCell: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: HabitTypeCell.reuseId, for: indexPath) as? HabitTypeCell else { return UITableViewCell() }
         
         let type = habitTypes[indexPath.row] // -> "Категория" или "Расписание"
-        let schedule: [DayOfWeek] = [] //= regularTracker?.schedule ?? [] // -> [DayOfWeek]
-        cell.update(type, schedule)
+        
+        //if type == "Расписание" {
+            //let schedule: [DayOfWeek] = [] //= regularTracker?.schedule ?? [] // -> [DayOfWeek]
+            cell.update(type, schedule, categoryName)
+        //}
+       
         
         cell.accessoryType = .disclosureIndicator
         return cell

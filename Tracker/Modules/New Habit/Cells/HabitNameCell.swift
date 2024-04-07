@@ -44,6 +44,9 @@ class HabitNameCell: UITableViewCell {
         return textField
     }()
     
+    func update(_ nameText: String) {
+        habitTextField.text = nameText
+    }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)

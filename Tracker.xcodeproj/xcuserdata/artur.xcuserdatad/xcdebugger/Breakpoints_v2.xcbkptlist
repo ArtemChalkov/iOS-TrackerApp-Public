@@ -122,8 +122,8 @@
             filePath = "Tracker/Modules/Trackers/TrackersViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "262"
-            endingLineNumber = "262"
+            startingLineNumber = "255"
+            endingLineNumber = "255"
             landmarkName = "searchBarSearchButtonClicked(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -138,8 +138,8 @@
             filePath = "Tracker/Modules/New Habit/NewHabitViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "207"
-            endingLineNumber = "207"
+            startingLineNumber = "209"
+            endingLineNumber = "209"
             landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
             <Locations>
@@ -279,8 +279,8 @@
             filePath = "Tracker/Modules/New Habit/NewHabitViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "289"
-            endingLineNumber = "289"
+            startingLineNumber = "303"
+            endingLineNumber = "303"
             landmarkName = "setupNavigationItems()"
             landmarkType = "7">
             <Locations>
@@ -426,6 +426,21 @@
                   endingLineNumber = "44"
                   offsetFromSymbolStart = "36">
                </Location>
+               <Location
+                  uuid = "E7FBD3A1-EA7E-4E9F-8BEA-FD47104DADB8 - 51b0b1373d3458e9"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Tracker.NewHabitViewController.category.didset : Swift.Optional&lt;Tracker.TrackerCategory&gt;"
+                  moduleName = "Tracker"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/artur/Downloads/TrackerApp%2015/Tracker/Modules/New%20Habit/NewHabitViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "44"
+                  endingLineNumber = "44"
+                  offsetFromSymbolStart = "28">
+               </Location>
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>
@@ -474,6 +489,21 @@
                   endingLineNumber = "53"
                   offsetFromSymbolStart = "364">
                </Location>
+               <Location
+                  uuid = "5AD16C97-D72F-4A2D-B33E-5866A19CCF22 - 4cbee3d0726bd202"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Tracker.ScheduleCell.daySwitchChanged(__C.UISwitch) -&gt; ()"
+                  moduleName = "Tracker"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/artur/Downloads/TrackerApp%2015/Tracker/Modules/Schedule/Cells/ScheduleCell.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "53"
+                  endingLineNumber = "53"
+                  offsetFromSymbolStart = "364">
+               </Location>
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>
@@ -487,39 +517,39 @@
             filePath = "Tracker/Modules/New Habit/NewHabitViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "230"
-            endingLineNumber = "230"
+            startingLineNumber = "232"
+            endingLineNumber = "232"
             landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "84520879-23F5-4950-B059-0C5AED4353B4 - 59aedacfbd02779d"
+                  uuid = "84520879-23F5-4950-B059-0C5AED4353B4 - abe118042dc04104"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "closure #7 () -&gt; () in Tracker.NewHabitViewController.tableView(_: __C.UITableView, cellForRowAt: Foundation.IndexPath) -&gt; __C.UITableViewCell"
                   moduleName = "Tracker"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/artur/Downloads/TrackerApp%205.15%202/Tracker/Modules/New%20Habit/NewHabitViewController.swift"
+                  urlString = "file:///Users/artur/Downloads/TrackerApp%2015/Tracker/Modules/New%20Habit/NewHabitViewController.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "230"
-                  endingLineNumber = "230"
-                  offsetFromSymbolStart = "432">
+                  startingLineNumber = "233"
+                  endingLineNumber = "233"
+                  offsetFromSymbolStart = "424">
                </Location>
                <Location
-                  uuid = "84520879-23F5-4950-B059-0C5AED4353B4 - 59aedacfbd02779d"
+                  uuid = "84520879-23F5-4950-B059-0C5AED4353B4 - abe118042dc04104"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "closure #7 () -&gt; () in Tracker.NewHabitViewController.tableView(_: __C.UITableView, cellForRowAt: Foundation.IndexPath) -&gt; __C.UITableViewCell"
                   moduleName = "Tracker"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/artur/Downloads/TrackerApp%205.15%202/Tracker/Modules/New%20Habit/NewHabitViewController.swift"
+                  urlString = "file:///Users/artur/Downloads/TrackerApp%2015/Tracker/Modules/New%20Habit/NewHabitViewController.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "230"
-                  endingLineNumber = "230"
+                  startingLineNumber = "233"
+                  endingLineNumber = "233"
                   offsetFromSymbolStart = "248">
                </Location>
             </Locations>
@@ -535,10 +565,42 @@
             filePath = "Tracker/Modules/Trackers/TrackersViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "268"
-            endingLineNumber = "268"
+            startingLineNumber = "261"
+            endingLineNumber = "261"
             landmarkName = "searchBar(_:textDidChange:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "F3188A42-D582-4629-9598-04B9F222A4E3 - 6a2adb6dd731d961"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Tracker.TrackersViewController.searchBarSearchButtonClicked(__C.UISearchBar) -&gt; ()"
+                  moduleName = "Tracker"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/artur/Downloads/TrackerApp%2015/Tracker/Modules/Trackers/TrackersViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "261"
+                  endingLineNumber = "261"
+                  offsetFromSymbolStart = "52">
+               </Location>
+               <Location
+                  uuid = "F3188A42-D582-4629-9598-04B9F222A4E3 - 9ff308ca6f7034cd"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Tracker.TrackersViewController.searchBar(_: __C.UISearchBar, textDidChange: Swift.String) -&gt; ()"
+                  moduleName = "Tracker"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/artur/Downloads/TrackerApp%2015/Tracker/Modules/Trackers/TrackersViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "262"
+                  endingLineNumber = "262"
+                  offsetFromSymbolStart = "92">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -551,39 +613,39 @@
             filePath = "Tracker/Modules/New Habit/NewHabitViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "257"
-            endingLineNumber = "257"
+            startingLineNumber = "271"
+            endingLineNumber = "271"
             landmarkName = "createButtonTapped()"
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "DC7D350F-544B-4042-9489-A5364FC9F6CC - 78905265ae7f1365"
+                  uuid = "DC7D350F-544B-4042-9489-A5364FC9F6CC - 8adf90ae3ebd2353"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "Tracker.NewHabitViewController.createButtonTapped() -&gt; ()"
                   moduleName = "Tracker"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/artur/Downloads/TrackerApp%205.15%202/Tracker/Modules/New%20Habit/NewHabitViewController.swift"
+                  urlString = "file:///Users/artur/Downloads/TrackerApp%2015/Tracker/Modules/New%20Habit/NewHabitViewController.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "258"
-                  endingLineNumber = "258"
-                  offsetFromSymbolStart = "628">
+                  startingLineNumber = "272"
+                  endingLineNumber = "272"
+                  offsetFromSymbolStart = "432">
                </Location>
                <Location
-                  uuid = "DC7D350F-544B-4042-9489-A5364FC9F6CC - 78905265ae7f1365"
+                  uuid = "DC7D350F-544B-4042-9489-A5364FC9F6CC - 8adf90ae3ebd2370"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "Tracker.NewHabitViewController.createButtonTapped() -&gt; ()"
                   moduleName = "Tracker"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/artur/Downloads/TrackerApp%205.15%202/Tracker/Modules/New%20Habit/NewHabitViewController.swift"
+                  urlString = "file:///Users/artur/Downloads/TrackerApp%2015/Tracker/Modules/New%20Habit/NewHabitViewController.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "258"
-                  endingLineNumber = "258"
+                  startingLineNumber = "273"
+                  endingLineNumber = "273"
                   offsetFromSymbolStart = "432">
                </Location>
             </Locations>
@@ -599,10 +661,42 @@
             filePath = "Tracker/Modules/Trackers/TrackersViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "146"
-            endingLineNumber = "146"
+            startingLineNumber = "135"
+            endingLineNumber = "135"
             landmarkName = "updateTrackerRecord(tracker:cell:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "3518ED61-68F6-4EC4-8A14-4589808F0B82 - 75056585b6da47a4"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Tracker.TrackersViewController.checkNumberOfTrackers() -&gt; ()"
+                  moduleName = "Tracker"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/artur/Downloads/TrackerApp%2015/Tracker/Modules/Trackers/TrackersViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "135"
+                  endingLineNumber = "135"
+                  offsetFromSymbolStart = "52">
+               </Location>
+               <Location
+                  uuid = "3518ED61-68F6-4EC4-8A14-4589808F0B82 - ba6c4707373661dc"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Tracker.TrackersViewController.updateTrackerRecord(tracker: Tracker.Tracker, cell: Tracker.TrackerCell) -&gt; ()"
+                  moduleName = "Tracker"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/artur/Downloads/TrackerApp%2015/Tracker/Modules/Trackers/TrackersViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "135"
+                  endingLineNumber = "135"
+                  offsetFromSymbolStart = "836">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -615,58 +709,42 @@
             filePath = "Tracker/Modules/Trackers/TrackersViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "151"
-            endingLineNumber = "151"
+            startingLineNumber = "140"
+            endingLineNumber = "140"
             landmarkName = "updateTrackerRecord(tracker:cell:)"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "9B9813AD-714D-4A6A-95B0-814D9D6A4580"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Tracker/Modules/Trackers/TrackersViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "326"
-            endingLineNumber = "326"
-            landmarkName = "didUpdate()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "48F97C50-2598-484F-82DD-7BD27A084868"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Tracker/Modules/Trackers/TrackersViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "335"
-            endingLineNumber = "335"
-            landmarkName = "didUpdateRecords(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "A4E1F5F8-7771-4014-8D46-ACA501011759"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Tracker/CoreData/TrackerRecordStore.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "82"
-            endingLineNumber = "82"
-            landmarkName = "loadCompletedTrackers(by:)"
-            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "70C68B25-E9AE-43E4-A02B-AD1914BF526D - 75056585b6da58fb"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Tracker.TrackersViewController.checkNumberOfTrackers() -&gt; ()"
+                  moduleName = "Tracker"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/artur/Downloads/TrackerApp%2015/Tracker/Modules/Trackers/TrackersViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "140"
+                  endingLineNumber = "140"
+                  offsetFromSymbolStart = "476">
+               </Location>
+               <Location
+                  uuid = "70C68B25-E9AE-43E4-A02B-AD1914BF526D - ba6c470737367e83"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Tracker.TrackersViewController.updateTrackerRecord(tracker: Tracker.Tracker, cell: Tracker.TrackerCell) -&gt; ()"
+                  moduleName = "Tracker"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/artur/Downloads/TrackerApp%2015/Tracker/Modules/Trackers/TrackersViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "140"
+                  endingLineNumber = "140"
+                  offsetFromSymbolStart = "992">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -714,68 +792,20 @@
                   endingLineNumber = "151"
                   offsetFromSymbolStart = "768">
                </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "2E6FC2C8-D4F7-47FC-B241-EF4C76312AD5"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Tracker/CoreData/TrackerRecordStore.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "90"
-            endingLineNumber = "90"
-            landmarkName = "loadCompletedTrackers(by:)"
-            landmarkType = "7">
-            <Locations>
                <Location
-                  uuid = "2E6FC2C8-D4F7-47FC-B241-EF4C76312AD5 - 7a7258eb3ea73954"
+                  uuid = "CB81EE97-0A93-4C40-A71D-3FB9DA9CD04F - 922d1f25417bd97c"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "Tracker.TrackerRecordStore.loadCompletedTrackers(by: Foundation.Date) throws -&gt; ()"
+                  symbolName = "Tracker.TrackerCell.plusButtonTapped(__C.UIButton) -&gt; ()"
                   moduleName = "Tracker"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/artur/Downloads/TrackerApp%205.15%202/Tracker/CoreData/TrackerRecordStore.swift"
+                  urlString = "file:///Users/artur/Downloads/TrackerApp%2015/Tracker/Modules/Trackers/TrackerCell.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "92"
-                  endingLineNumber = "92"
-                  offsetFromSymbolStart = "936">
-               </Location>
-               <Location
-                  uuid = "2E6FC2C8-D4F7-47FC-B241-EF4C76312AD5 - 7a7258eb3ea73916"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Tracker.TrackerRecordStore.loadCompletedTrackers(by: Foundation.Date) throws -&gt; ()"
-                  moduleName = "Tracker"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/artur/Downloads/TrackerApp%205.15%202/Tracker/CoreData/TrackerRecordStore.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "94"
-                  endingLineNumber = "94"
-                  offsetFromSymbolStart = "936">
-               </Location>
-               <Location
-                  uuid = "2E6FC2C8-D4F7-47FC-B241-EF4C76312AD5 - 7a7258eb3ea73916"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Tracker.TrackerRecordStore.loadCompletedTrackers(by: Foundation.Date) throws -&gt; ()"
-                  moduleName = "Tracker"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/artur/Downloads/TrackerApp%205.15%202/Tracker/CoreData/TrackerRecordStore.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "94"
-                  endingLineNumber = "94"
-                  offsetFromSymbolStart = "956">
+                  startingLineNumber = "151"
+                  endingLineNumber = "151"
+                  offsetFromSymbolStart = "768">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -825,6 +855,21 @@
                   endingLineNumber = "105"
                   offsetFromSymbolStart = "632">
                </Location>
+               <Location
+                  uuid = "06CF2067-C155-4FE8-BE59-B380DDD32C74 - ddf6aec96acee046"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Tracker.TrackerRecordStore.makeTrackerRecord(from: Tracker.TrackerRecordCoreData) throws -&gt; Tracker.TrackerRecord"
+                  moduleName = "Tracker"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/artur/Downloads/TrackerApp%2015/Tracker/CoreData/TrackerRecordStore.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "105"
+                  endingLineNumber = "105"
+                  offsetFromSymbolStart = "632">
+               </Location>
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>
@@ -858,6 +903,102 @@
             endingLineNumber = "135"
             landmarkName = "plusButtonTapped(_:)"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "EFF0AB87-BAE3-41B1-A004-47F589679C03"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Tracker/Modules/New Habit/NewHabitViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "329"
+            endingLineNumber = "329"
+            landmarkName = "didConfirm(_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "EFF0AB87-BAE3-41B1-A004-47F589679C03 - fc63f6f8a28f0a85"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Tracker.NewHabitViewController.didConfirm(Tracker.TrackerCategory) -&gt; ()"
+                  moduleName = "Tracker"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/artur/Downloads/TrackerApp%2015/Tracker/Modules/New%20Habit/NewHabitViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "330"
+                  endingLineNumber = "330"
+                  offsetFromSymbolStart = "176">
+               </Location>
+               <Location
+                  uuid = "EFF0AB87-BAE3-41B1-A004-47F589679C03 - fc63f6f8a28f0a85"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Tracker.NewHabitViewController.didConfirm(Tracker.TrackerCategory) -&gt; ()"
+                  moduleName = "Tracker"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/artur/Downloads/TrackerApp%2015/Tracker/Modules/New%20Habit/NewHabitViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "330"
+                  endingLineNumber = "330"
+                  offsetFromSymbolStart = "120">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "29826980-0055-474C-9EC7-14FDC1212ACB"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Tracker/Modules/New Habit/NewHabitViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "245"
+            endingLineNumber = "245"
+            landmarkName = "categoryCellSelected()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "29826980-0055-474C-9EC7-14FDC1212ACB - 10a1b4a3881577a8"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Tracker.NewHabitViewController.categoryCellSelected() -&gt; ()"
+                  moduleName = "Tracker"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/artur/Downloads/TrackerApp%2015/Tracker/Modules/New%20Habit/NewHabitViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "246"
+                  endingLineNumber = "246"
+                  offsetFromSymbolStart = "108">
+               </Location>
+               <Location
+                  uuid = "29826980-0055-474C-9EC7-14FDC1212ACB - 10a1b4a38815774f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Tracker.NewHabitViewController.categoryCellSelected() -&gt; ()"
+                  moduleName = "Tracker"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/artur/Downloads/TrackerApp%2015/Tracker/Modules/New%20Habit/NewHabitViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "247"
+                  endingLineNumber = "247"
+                  offsetFromSymbolStart = "108">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
