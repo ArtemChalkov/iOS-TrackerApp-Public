@@ -8,12 +8,11 @@ import UIKit
 final class ScheduleCell: UITableViewCell {
     
     static let reuseId = "ScheduleCell"
-    
     static let height: CGFloat = 75
     
-    private var day: String?
+    private var day: DayOfWeek?
     
-    var onDaySwitchChanged: ((String, Bool)->())?
+    var onDaySwitchChanged: ((DayOfWeek, Bool)->())?
     
     private let dayLabel: UILabel = {
         let label = UILabel()
@@ -28,11 +27,7 @@ final class ScheduleCell: UITableViewCell {
         let control = UISwitch()
         control.isOn = false
         control.translatesAutoresizingMaskIntoConstraints = false
-        //control.tintColor = Colors.blue
-        //control.backgroundColor = Colors.blue
-        
         control.onTintColor = Colors.blue
-        
         control.addTarget(nil, action: #selector(daySwitchChanged(_:)), for: .valueChanged)
         return control
     }()
@@ -56,24 +51,24 @@ extension ScheduleCell {
     @objc func daySwitchChanged(_ sender: UISwitch) {
         
         guard let day = self.day else { return }
-        
         let dayIsChoosen = sender.isOn
-        
         onDaySwitchChanged?(day, dayIsChoosen)
     }
 }
 
 //MARK: - Public
 extension ScheduleCell {
-    func update(_ day: String, _ schedule: [Weekday]) {
+    func update(_ day: DayOfWeek, _ selectedDays: Set<DayOfWeek>) {
+       
         self.day = day
-        dayLabel.text = day
         
-        for weekday in schedule {
-            
-            if weekday.rawValue == day {
-                daySwitch.isOn = true
-            }
+        dayLabel.text = day.rawValue
+        
+        //Если день входит в выбранные дни
+        if selectedDays.contains(day) {
+            daySwitch.isOn = true
+        } else {
+            daySwitch.isOn = false
         }
     }
 }
@@ -94,15 +89,11 @@ extension ScheduleCell {
     }
     
     func setupConstraints() {
-        
         dayLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
         dayLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: 0).isActive = true
-        
         contentView.heightAnchor.constraint(equalToConstant: ScheduleCell.height).isActive = true
-        
         daySwitch.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16).isActive = true
         daySwitch.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: 0).isActive = true
-        
         daySwitch.widthAnchor.constraint(equalToConstant:51).isActive = true
     }
 }

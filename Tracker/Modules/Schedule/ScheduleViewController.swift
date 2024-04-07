@@ -6,68 +6,31 @@
 
 import UIKit
 
-enum Weekday: String, CaseIterable {
-    case monday = "Понедельник"
-    case tuesday = "Вторник"
-    case wednesday = "Среда"
-    case thursday = "Четверг"
-    case friday = "Пятница"
-    case saturday = "Суббота"
-    case sunday = "Воскресенье"
-    
-    func shortDay() -> String {
-        switch self {
-        case .monday: return "Пн"
-        case .tuesday: return "Вт"
-        case .wednesday: return "Ср"
-        case .thursday: return "Чт"
-        case .friday: return "Пт"
-        case .saturday: return "Сб"
-        case .sunday: return "Вс"
-        }
-    }
-    
-    func index() -> Int {
-        switch self {
-        case .monday: return 0
-        case .tuesday: return 1
-        case .wednesday: return 2
-        case .thursday: return 3
-        case .friday: return 4
-        case .saturday: return 5
-        case .sunday: return 6
-        }
-    }
-}
-
 final class ScheduleViewController: UIViewController {
+    
+    //var array: [DayOfWeek] = [.sunday, .monday].sorted { $0.index() < $1.index() }
+    
+    private var selectedWeekdays: Set<DayOfWeek> = [] {
+        didSet {
+            tableView.reloadData()
+        }
+    }
+    lazy var days: [DayOfWeek] = [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]
 
-    
-    //var array: [Weekday] = [.sunday, .monday].sorted { $0.index() < $1.index() }
-    
-    lazy var days: [String] = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"]
-    
-    private var trackerService = TrackerService.shared
-    
-    private var schedule: [Weekday] = []
-    
-    var onTrackerChanged: ((Tracker)->())?
+    var onScheduleChanged: (([DayOfWeek])->())?
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        
         tableView.contentInset = UIEdgeInsets(top: -1, left: 0, bottom: 0, right: 0) //фикс верхнего сепаратора
         tableView.backgroundColor = Colors.lightGray
         tableView.layer.cornerRadius = 16
         tableView.clipsToBounds = true
         tableView.isScrollEnabled = false
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        
         tableView.register(ScheduleCell.self, forCellReuseIdentifier: ScheduleCell.reuseId)
-        
         return tableView
     }()
     
@@ -94,28 +57,16 @@ final class ScheduleViewController: UIViewController {
 
 extension ScheduleViewController {
     
-    func update(_ schedule: [Weekday]) {
-        self.schedule = schedule
-        tableView.reloadData()
+    func update(_ schedule: [DayOfWeek]) {
+        self.selectedWeekdays = Set(schedule)
     }
 }
 
 private extension ScheduleViewController {
     
     @objc func doneButtonTapped() {
-        
-        if let tracker = trackerService.currentTracker {
-            
-            //if trackerService.categories.
-            
-            trackerService.append(tracker)
-            print("->", trackerService.categories)
-            NotificationCenter.default.post(name: Notification.Name("UpdateTrackersScreen"), object: nil, userInfo: nil)
-            //dismiss(animated: true)
-            onTrackerChanged?(tracker)
-        }
-       
-        
+        let sortedDays: [DayOfWeek] = Array(selectedWeekdays).sorted { $0.index() < $1.index() }
+        onScheduleChanged?(sortedDays)
         navigationController?.popViewController(animated: true)
     }
 }
@@ -138,9 +89,7 @@ private extension ScheduleViewController {
         tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16).isActive = true
         tableView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16).isActive = true
         tableView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16).isActive = true
-        
         tableView.heightAnchor.constraint(equalToConstant: CGFloat(days.count) * ScheduleCell.height).isActive = true
-        
         doneButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
         doneButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
         doneButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16).isActive = true
@@ -157,32 +106,16 @@ extension ScheduleViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ScheduleCell.reuseId, for: indexPath) as? ScheduleCell else { return UITableViewCell() }
         
         let day = days[indexPath.row]
+        cell.update(day, selectedWeekdays)
         
-        cell.update(day, schedule)
-        
-        cell.onDaySwitchChanged = { [weak self] (day, dayIsChoosen) in
+        cell.onDaySwitchChanged = { [weak self] (day, isSelected) in
             
-            guard let self else { return }
-            
-            guard let weekday = Weekday(rawValue: day) else { return }
-            
-            var tracker = self.trackerService.currentTracker
-            
-            if dayIsChoosen {
-                tracker?.schedule.append(weekday)
+            if isSelected {
+                self?.selectedWeekdays.insert(day)
             } else {
-                tracker?.schedule.removeAll(where: { $0 == weekday })
+                self?.selectedWeekdays.remove(day)
             }
-            
-            
-            tracker?.schedule.sort(by: { $0.index() < $1.index() })
-            
-            self.trackerService.currentTracker = tracker
-            
-            print("->", tracker?.schedule)
-            
         }
-        
         return cell
     }
     
