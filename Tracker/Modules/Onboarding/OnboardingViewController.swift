@@ -17,18 +17,6 @@ final class OnboardingViewController: UIPageViewController {
         return [firstPage, secondPage]
     }()
     
-    private lazy var enterButton: UIButton = {
-        let button = UIButton()
-        button.backgroundColor = Colors.black
-        button.setTitle("Вот это технологии!", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        button.layer.cornerRadius = 16
-        button.addTarget(nil, action: #selector(buttonTapped), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-       
-        return button
-    }()
-    
     private lazy var pageControl: UIPageControl = {
         let control = UIPageControl()
         control.numberOfPages = pages.count
@@ -45,15 +33,7 @@ final class OnboardingViewController: UIPageViewController {
         setupViews()
         setupConstraints()
     }
-    
-    // MARK: - Actions
-    @objc
-    private func buttonTapped() {
-        let tabBarVC = TabBarController()
-        tabBarVC.modalPresentationStyle = .fullScreen
-        present(tabBarVC, animated: true)
-    }
-    
+
     func animateTextChange(for label: UILabel, newText: String) {
         UIView.transition(with: label, duration: 0.3, animations: {
             label.text = newText
@@ -65,24 +45,19 @@ final class OnboardingViewController: UIPageViewController {
 
 extension OnboardingViewController {
     func setupViews() {
-        //transitionStyle = .scroll
         dataSource = self
         delegate = self
         if let first = pages.first {
             setViewControllers([first], direction: .forward, animated: true)
         }
 
-        [pageControl, enterButton].forEach { view.addSubview($0) }
+        [pageControl].forEach { view.addSubview($0) }
     }
     
     func setupConstraints() {
         NSLayoutConstraint.activate([
-            pageControl.bottomAnchor.constraint(equalTo: enterButton.topAnchor, constant: -24),
+            pageControl.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -134),
             pageControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            enterButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            enterButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            enterButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50),
-            enterButton.heightAnchor.constraint(equalToConstant: 60),
         ])
     }
 }
