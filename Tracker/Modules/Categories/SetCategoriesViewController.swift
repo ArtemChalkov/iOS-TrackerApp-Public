@@ -28,10 +28,15 @@ final class SetCategoriesViewController: UIViewController {
         
     private lazy var addButton: UIButton = {
         let button = UIButton()
+        
+        button.backgroundColor = .BlackDay //Colors.black
+        //button.setTitleColor(.BlackDay, for: .normal)
+        button.setTitleColor(.BlackNight, for: .normal)
+        
         button.setTitle("Добавить категорию", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         button.layer.cornerRadius = 16
-        button.backgroundColor = Colors.black
+        
         button.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -99,7 +104,7 @@ final class SetCategoriesViewController: UIViewController {
 private extension SetCategoriesViewController {
     func setupViews() {
         title = "Категория"
-        view.backgroundColor = .white
+        view.backgroundColor = .WhiteDay
         [categoriesView, addButton, starCombined].forEach { view.addSubview($0) }
         
         categoriesView.dataSource = self
@@ -215,7 +220,7 @@ extension SetCategoriesViewController {
         private let starCombinedLabel: UILabel = {
             let label = UILabel()
             label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-            label.textColor = Colors.black
+            label.textColor = .blackDay //Colors.black
             label.textAlignment = .center
             label.numberOfLines = 2
             return label

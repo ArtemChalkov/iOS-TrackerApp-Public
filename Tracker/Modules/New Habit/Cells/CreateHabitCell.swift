@@ -23,8 +23,10 @@ final class CreateHabitCell: UITableViewCell {
     
     private lazy var confirmButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = Colors.gray
-        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = .Gray
+        
+        
+        button.setTitleColor(.BlackNight, for: .normal)
         button.setTitle("Создать", for: .normal)
         //button.isUserInteractionEnabled = false
         button.layer.cornerRadius = 16
@@ -39,10 +41,10 @@ final class CreateHabitCell: UITableViewCell {
     
     private lazy var cancelButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = .white
+        button.backgroundColor = .WhiteDay
         button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.red.cgColor
-        button.setTitleColor(.red, for: .normal)
+        button.layer.borderColor = UIColor.Red.cgColor
+        button.setTitleColor(.Red, for: .normal)
         button.setTitle("Отменить", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         button.layer.cornerRadius = 16
@@ -71,10 +73,10 @@ extension CreateHabitCell {
     func update(_ isConfirmButtonEnabled: Bool) {
         
         if isConfirmButtonEnabled {
-            confirmButton.backgroundColor = Colors.black
+            confirmButton.backgroundColor = .BlackDay
             confirmButton.isEnabled = true
         } else {
-            confirmButton.backgroundColor = Colors.gray
+            confirmButton.backgroundColor = .Gray
             confirmButton.isEnabled = false
         }
     }

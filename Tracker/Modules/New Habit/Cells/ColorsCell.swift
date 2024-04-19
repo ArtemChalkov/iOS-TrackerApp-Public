@@ -134,7 +134,7 @@ class ColorsCollectionCell: UICollectionViewCell {
         
     private var containerView: UIView = {
         let view = UIView()
-        view.backgroundColor = .white
+        view.backgroundColor = .WhiteDay
         //view.layer.cornerRadius =
         //view.clipsToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false

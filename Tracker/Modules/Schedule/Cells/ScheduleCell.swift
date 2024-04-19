@@ -27,7 +27,7 @@ final class ScheduleCell: UITableViewCell {
         let control = UISwitch()
         control.isOn = false
         control.translatesAutoresizingMaskIntoConstraints = false
-        control.onTintColor = Colors.blue
+        control.onTintColor = .Blue
         control.addTarget(nil, action: #selector(daySwitchChanged(_:)), for: .valueChanged)
         return control
     }()

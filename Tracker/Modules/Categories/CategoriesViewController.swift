@@ -19,8 +19,8 @@ import UIKit
      
      private lazy var readyButton: UIButton = {
          let button = UIButton()
-         button.backgroundColor = Colors.gray
-         button.setTitleColor(.white, for: .normal)
+         button.backgroundColor = .Gray
+         button.setTitleColor(.WhiteDay, for: .normal)
          button.setTitle("Готово", for: .normal)
          button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
          button.layer.cornerRadius = 16
@@ -36,10 +36,10 @@ import UIKit
      private var isConfirmButtonEnabled: Bool = false {
          willSet {
              if newValue {
-                 readyButton.backgroundColor = Colors.black
+                 readyButton.backgroundColor = .blackDay //Colors.black
                  readyButton.isEnabled = true
              } else {
-                 readyButton.backgroundColor = Colors.gray
+                 readyButton.backgroundColor = .Gray
                  readyButton.isEnabled = false
              }
          }
@@ -83,7 +83,7 @@ import UIKit
  private extension CategoryViewController {
      func setupViews() {
          title = "Новая категория"
-         view.backgroundColor = .white
+         view.backgroundColor = .WhiteDay
          [textField, readyButton].forEach { view.addSubview($0) }
          
          readyButton.translatesAutoresizingMaskIntoConstraints = false

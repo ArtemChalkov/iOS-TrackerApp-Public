@@ -38,6 +38,9 @@ final class HabitTypeContainerCell: UITableViewCell {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
         tableView.contentInset = UIEdgeInsets(top: 1, left: 0, bottom: 0, right: 0) //фикс верхнего сепаратора
+        
+        tableView.separatorColor = .gray
+        
         tableView.backgroundColor = Colors.lightGray
         tableView.layer.cornerRadius = 16
         tableView.clipsToBounds = true

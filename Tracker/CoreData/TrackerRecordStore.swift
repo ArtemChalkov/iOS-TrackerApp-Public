@@ -65,31 +65,21 @@ extension TrackerRecordStore {
         
         //
         let records = try context.fetch(request)
-        
         guard let recordToRemove = records.first else { return }
-        
         context.delete(recordToRemove)
-        
         try context.save()
-        
         completedTrackers.remove(record)
-        
         delegate?.didUpdateRecords(completedTrackers)
     }
     
     //MARK: READ
     func loadCompletedTrackers(by date: Date) throws {
-        
+
         let request = NSFetchRequest<TrackerRecordCoreData>(entityName: "TrackerRecordCoreData")
-        
         request.returnsObjectsAsFaults = false
-        
         request.predicate = NSPredicate(format: "%K == %@", #keyPath(TrackerRecordCoreData.date), date as NSDate)
-        
         let recordsCoreData = try context.fetch(request)
-        
-        
-        
+
         //Parsing
         let records = try recordsCoreData.map { try makeTrackerRecord(from: $0) }
         
@@ -98,14 +88,19 @@ extension TrackerRecordStore {
         delegate?.didUpdateRecords(completedTrackers)
     }
     
+    func loadCompletedTrackers() throws -> [TrackerRecord] {
+        let request = NSFetchRequest<TrackerRecordCoreData>(entityName: "TrackerRecordCoreData")
+        let recordsCoreData = try context.fetch(request)
+        let records = try recordsCoreData.map { try makeTrackerRecord(from: $0) }
+        return records
+    }
+    
     //MARK: PARSE
     private func makeTrackerRecord(from coreData: TrackerRecordCoreData) throws -> TrackerRecord {
-        
-        
+    
         print(coreData.recordId)
         print(coreData.date)
         print(coreData.tracker)
-        
         
         if let idString = coreData.recordId,
            let id = UUID(uuidString: idString),
@@ -117,8 +112,5 @@ extension TrackerRecordStore {
         } else {
             throw StoreError.decodeError
         }
-        
-        
-       
     }
 }

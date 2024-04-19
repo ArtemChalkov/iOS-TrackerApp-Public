@@ -10,7 +10,7 @@ final class ListOfItems: UIView {
 
     private let border: UIView = {
         let view = UIView()
-        view.backgroundColor = Colors.gray
+        view.backgroundColor = .Gray
         view.isHidden = true
         return view
     }()
@@ -57,7 +57,7 @@ extension ListOfItems {
         translatesAutoresizingMaskIntoConstraints = false
         layer.cornerRadius = 16
         
-        backgroundColor = Colors.lightGray
+        backgroundColor = .BackgroundDay
 
         addSubview(border)
         border.translatesAutoresizingMaskIntoConstraints = false

@@ -32,7 +32,7 @@ final class TrackerCell: UICollectionViewCell {
         return view
     }()
     
-    private var iconButton: UIButton = {
+    private var emojiButton: UIButton = {
         let button = UIButton()
         button.setTitle("", for: .normal)
         button.layer.cornerRadius = 12
@@ -48,12 +48,13 @@ final class TrackerCell: UICollectionViewCell {
         view.textColor = .systemBackground
         view.text = "Поливать растения"
         view.font = UIFont.systemFont(ofSize: 12, weight: .medium)
+        view.textColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
         return view
     }()
     
     private var dayLabel: UILabel = {
         let view = UILabel()
-        view.textColor = .black
+        view.textColor = .BlackDay
         view.font = UIFont.systemFont(ofSize: 12, weight: .medium)
         view.text = "1 день"
         return view
@@ -66,7 +67,7 @@ final class TrackerCell: UICollectionViewCell {
         button.heightAnchor.constraint(equalToConstant: 34).isActive = true
         button.layer.cornerRadius = 17
         button.addTarget(nil, action: #selector(plusButtonTapped(_:)), for: .touchUpInside)
-        button.tintColor = .white
+        button.tintColor = .WhiteDay
         return button
     }()
     
@@ -81,9 +82,14 @@ final class TrackerCell: UICollectionViewCell {
     
     func setupViews() {
 
-        [containerView, iconButton, nameLabel, dayLabel, plusButton].forEach { view in
+        [containerView, dayLabel, plusButton].forEach { view in
             view.translatesAutoresizingMaskIntoConstraints = false
             contentView.addSubview(view)
+        }
+        
+        [emojiButton, nameLabel].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            containerView.addSubview($0)
         }
     }
     func setupConstraints() {
@@ -95,12 +101,12 @@ final class TrackerCell: UICollectionViewCell {
         ])
         
         NSLayoutConstraint.activate([
-            iconButton.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 12),
-            iconButton.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 12)
+            emojiButton.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 12),
+            emojiButton.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 12)
         ])
         
         NSLayoutConstraint.activate([
-            nameLabel.topAnchor.constraint(equalTo: iconButton.bottomAnchor, constant: 8),
+            nameLabel.topAnchor.constraint(equalTo: emojiButton.bottomAnchor, constant: 8),
             nameLabel.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 12),
             nameLabel.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: 12),
             nameLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -12)
@@ -117,17 +123,19 @@ final class TrackerCell: UICollectionViewCell {
         ])
     }
     
-    func update(_ tracker: Tracker, counter: Int = 0, isComplete: Bool = false, calendarDate: Date) {
+    func update(_ tracker: Tracker, counter: Int = 0, isComplete: Bool = false, calendarDate: Date, interaction: UIInteraction) {
         
         self.tracker = tracker
         self.days = counter
         
         nameLabel.text = tracker.name
-        iconButton.setTitle(tracker.emoji, for: .normal)
+        emojiButton.setTitle(tracker.emoji, for: .normal)
         plusButton.backgroundColor = tracker.color
         containerView.backgroundColor = tracker.color
         
-
+        containerView.addInteraction(interaction)
+        
+        
         switchAddDayButton(to: isComplete)
     }
     

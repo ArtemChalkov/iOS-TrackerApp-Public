@@ -129,7 +129,6 @@ class EmojisCollectionCell: UICollectionViewCell {
     
     private var containerView: UIView = {
         let view = UIView()
-        //view.backgroundColor = Colors.lightGray
         view.layer.cornerRadius = 16
         view.clipsToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -159,7 +158,7 @@ class EmojisCollectionCell: UICollectionViewCell {
         emojiLabel.text = emoji.symbol
         
         if emoji.isSelected {
-            containerView.backgroundColor = Colors.lightGray1
+            containerView.backgroundColor = .LightGray //Colors.lightGray1
         } else {
             containerView.backgroundColor = .clear
         }
