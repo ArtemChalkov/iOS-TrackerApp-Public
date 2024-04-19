@@ -8,14 +8,6 @@ import UIKit
 
 final class TrackersViewController: UIViewController {
     
-    //private var searchText: String = ""
-    private var categories: [TrackerCategory] = []
-    
-    private var visibleCategories: [TrackerCategory] {
-        return []
-    }
-
-    //private var completedTrackers: [TrackerRecord] = []
     private var completedTrackers: Set<TrackerRecord> = []
     
     private var searchText = "" {
@@ -102,10 +94,7 @@ final class TrackersViewController: UIViewController {
         setupNavigationBarItems()
         setupViews()
         setupConstraints()
-        
-        //addTapGestureToHideKeyboard()
-        //NotificationCenter.default.addObserver(self, selector: #selector(update), name: Notification.Name("UpdateTrackersScreen"), object: nil)
-        
+
         fetchTrackers()
     }
 }
@@ -122,8 +111,8 @@ final class TrackersViewController: UIViewController {
 private extension TrackersViewController {
     
     func fetchTrackers() {
-        trackerRecordStore.delegate = self
         trackerStore.delegate = self
+        trackerRecordStore.delegate = self
         
         try? trackerStore.loadFilteredTrackers(date: currentDate, searchString: searchText)
         try? trackerRecordStore.loadCompletedTrackers(by: currentDate)
@@ -247,6 +236,10 @@ extension TrackersViewController: UICollectionViewDataSource, UICollectionViewDe
         
         if kind == UICollectionView.elementKindSectionHeader {
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TrackerHeader.identifier, for: indexPath) as! TrackerHeader
+            
+            guard let categoryName =  trackerStore.headerLabelInSection(indexPath.section) else { return UICollectionReusableView() }
+            header.update(categoryName)
+            
             // Настройте header
             return header
         }

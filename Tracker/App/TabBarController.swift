@@ -28,6 +28,8 @@ final class TabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        UserDefaults.standard.set(true, forKey: "onboardingIsProcessed")
+        
         let topline = CALayer()
         topline.frame = CGRect(x: 0, y: 0, width: self.tabBar.frame.width, height: 1)
         topline.backgroundColor = UIColor.lightGray.withAlphaComponent(0.5).cgColor

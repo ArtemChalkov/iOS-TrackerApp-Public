@@ -96,7 +96,6 @@ final class NewHabitViewController: UIViewController {
         setupConstraints()
         setupNavigationItems()
         
-        //addTapGestureToHideKeyboard()
     }
 }
 
@@ -140,8 +139,6 @@ extension NewHabitViewController {
         self.tableView.reloadRows(at: [indexPath],
                                   with: .fade)
     }
-    
-    
 }
 
 //MARK: - UITableViewDataSource
@@ -170,6 +167,8 @@ extension NewHabitViewController: UITableViewDataSource {
                     print("->", self?.data)
                 }
                 
+                cell.update(data.name)
+                
                 return cell
                 
             case .habitType:
@@ -177,6 +176,7 @@ extension NewHabitViewController: UITableViewDataSource {
                 
                 cell.onCategoryCellSelected = {
                     print("->", "Category")
+                    self.categoryCellSelected()
                 }
                 
                 cell.onScheduleCellSelected = { [weak self] in
@@ -185,7 +185,9 @@ extension NewHabitViewController: UITableViewDataSource {
                     self?.scheduleButtonTapped()
                 }
                 
-                cell.update(habitTypes)
+                let schedule = data.schedule ?? []
+                let categoryName = category?.name ?? ""
+                cell.update(habitTypes, schedule, categoryName)
                 
                 return cell
                 
@@ -239,14 +241,26 @@ extension NewHabitViewController: UITableViewDataSource {
 //MARK: - Event Handler
 extension NewHabitViewController {
     
+    func categoryCellSelected() {
+        
+        let setCategoriesViewController = SetCategoriesViewController(selectedCategory: category)
+        setCategoriesViewController.delegate = self
+        
+        let navigationController = UINavigationController(rootViewController: setCategoriesViewController)
+        navigationController.isModalInPresentation = true
+        present(navigationController, animated: true)
+    }
+    
     func scheduleButtonTapped() {
         view.endEditing(true)
         
         let schedule = self.data.schedule ?? []
         let scheduleVC = ScheduleViewController()
         scheduleVC.onScheduleChanged = { [weak self] schedule in
+            
             self?.data.schedule = schedule
             print(self?.data)
+            self?.tableView.reloadData()
         }
         self.navigationController?.pushViewController(scheduleVC, animated: true)
         
@@ -307,3 +321,13 @@ extension NewHabitViewController {
         ])
     }
 }
+
+// MARK: - SetCategoriesViewControllerDelegate
+ extension NewHabitViewController: SetCategoriesViewControllerDelegate {
+     
+     func didConfirm(_ category: TrackerCategory) {
+         self.category = category
+         tableView.reloadData()
+         dismiss(animated: true)
+     }
+ }

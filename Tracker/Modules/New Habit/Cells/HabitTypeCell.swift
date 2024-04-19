@@ -54,8 +54,13 @@ final class HabitTypeCell: UITableViewCell {
 
 //MARK: - Public
 extension HabitTypeCell {
-    func update(_ type: String, _ weekday: [DayOfWeek]) {
+    func update(_ type: String, _ weekday: [DayOfWeek], _ categoryName: String) {
         typeLabel.text = type
+        
+        
+        if type == "Категория" {
+            scheduleLabel.text = categoryName
+        }
         
         if type == "Расписание" {
             var values: [String] = []

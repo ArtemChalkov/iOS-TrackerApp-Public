@@ -9,13 +9,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
-
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
 
         guard let scene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: scene)
-        let tabBarVC = TabBarController()
-        window?.rootViewController = tabBarVC
+        
+        
+        if UserDefaults.standard.bool(forKey: "onboardingIsProcessed") {
+            let tabBarVC = TabBarController()
+            window?.rootViewController = tabBarVC
+        } else {
+            let onboardingVC = OnboardingViewController.init(transitionStyle: .scroll, navigationOrientation: .horizontal)
+            window?.rootViewController = onboardingVC
+        }
+        
+        
         window?.makeKeyAndVisible()
     }
 

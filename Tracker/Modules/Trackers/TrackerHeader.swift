@@ -35,7 +35,7 @@ final class TrackerHeader: UICollectionReusableView {
         ])
     }
     
-    func update(_ category: String) {
-        headerLabel.text = category
+    func update(_ categoryName: String) {
+        headerLabel.text = categoryName
     }
 }
