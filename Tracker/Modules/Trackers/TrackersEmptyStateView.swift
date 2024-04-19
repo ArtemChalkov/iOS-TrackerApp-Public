@@ -23,7 +23,7 @@ final class TrackersEmptyStateView: UIView {
     private var emptyStateLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Что будем отслеживать?"
+        label.text = "Trackers.whatWeWillTrace".localized
         label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
         return label
     }()
@@ -55,10 +55,10 @@ final class TrackersEmptyStateView: UIView {
         
         switch type {
         case .empty:
-            emptyStateLabel.text = "Что будем отслеживать?"
+            emptyStateLabel.text = "Trackers.whatWeWillTrace".localized
             emptyStateImageView.image = UIImage(named: "empty")
         case .error:
-            emptyStateLabel.text = "Ничего не найдено"
+            emptyStateLabel.text = "Trackers.nothingFound".localized
             emptyStateImageView.image = UIImage(named: "error")
         }
     }

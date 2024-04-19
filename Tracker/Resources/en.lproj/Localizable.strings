@@ -1,0 +1,31 @@
+/* 
+  Localizable.strings
+  Tracker
+
+*/
+
+/// TrackersViewController
+"Trackers.title" = "Trackers";
+"Trackers.search" = "Search";
+"Trackers.whatWeWillTrace" = "What will we track?";
+"Trackers.filters" = "Filters";
+"Trackers.nothingFound" = "Nothing found";
+"Trackers.deleteTracker" = "Are you sure to delete the tracker?";
+"Trackers.pin" = "Pin";
+"Trackers.unPin" = "Unpin";
+"Trackers.cancel" = "Cancel";
+
+
+//TabBarController
+"TabBar.trackers" = "Trackers";
+"TabBar.statistics" = "Statistics";
+
+/// StatisticViewController
+"StatisticViewController.title" = "Statistics";
+"StatisticViewController.nothingToAnalyze" = "Nothing to analyze";
+"StatisticViewController.finishedTrackers" = "Finished trackers";
+
+"SetCategories.edit" = "Edit";
+"SetCategories.delete" = "Delete";
+
+"TrackerForm.cancel" = "Cancel";

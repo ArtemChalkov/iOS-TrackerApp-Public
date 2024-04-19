@@ -13,10 +13,15 @@ protocol TrackerStoreDelegate: AnyObject {
 protocol TrackerStoreProtocol {
     var numberOfTrackers: Int { get }
     var numberOfSections: Int { get }
+    var delegate: TrackerStoreDelegate? { get set}
     func numberOfRowsInSection(_ section: Int) -> Int
     func headerLabelInSection(_ section: Int) -> String?
     func tracker(at indexPath: IndexPath) -> Tracker?
     func addTracker(_ tracker: Tracker, with category: TrackerCategory) throws
+    func updateTracker(_ tracker: Tracker, with data: Tracker.Data) throws
+    func deleteTracker(_ tracker: Tracker) throws
+    func togglePin(for tracker: Tracker) throws
+    func loadFilteredTrackers(date: Date, searchString: String) throws
 }
 
 final class TrackerStore: NSObject {
@@ -98,6 +103,38 @@ final class TrackerStore: NSObject {
 
 // MARK: - TrackerStoreProtocol
 extension TrackerStore: TrackerStoreProtocol {
+    
+    func updateTracker(_ tracker: Tracker, with data: Tracker.Data) throws {
+        guard
+            let emoji = data.emoji,
+            let color = data.color,
+            let category = data.category
+        else { return }
+        
+        let trackerCoreData = try getTrackerCoreData(by: tracker.id)
+        let categoryCoreData = try trackerCategoryStore.categoryCoreData(with: category.id)
+        trackerCoreData?.name = data.name
+        trackerCoreData?.emoji = emoji
+        trackerCoreData?.colorHex = ColorMarshalling.serialize(color: color)
+        trackerCoreData?.schedule = DayOfWeek.code(data.schedule)
+        trackerCoreData?.category = categoryCoreData
+        try context.save()
+    }
+    
+    
+    func deleteTracker(_ tracker: Tracker) throws {
+        guard let trackerToDelete = try getTrackerCoreData(by: tracker.id) else { throw StoreError.deleteError }
+        context.delete(trackerToDelete)
+        try context.save()
+    }
+    
+    func togglePin(for tracker: Tracker) throws {
+        guard let trackerToToggle = try getTrackerCoreData(by: tracker.id) else { throw StoreError.pinError }
+        
+        trackerToToggle.isPinned.toggle()
+        try context.save()
+    }
+    
     var numberOfTrackers: Int {
         fetchedResultsController.fetchedObjects?.count ?? 0
     }
@@ -156,17 +193,22 @@ extension TrackerStore {
            let name = coreData.name,
            let emoji = coreData.emoji,
            let colorHex = coreData.colorHex,
-           let daysCount = coreData.records {
+           let daysCount = coreData.records,
+           let categoryCoreData = coreData.category,
+           let category = try? trackerCategoryStore.makeCategory(from: categoryCoreData) {
             
             let color = ColorMarshalling.deserialize(hexString: colorHex)
             let scheduleString = coreData.schedule
             let schedule = DayOfWeek.decode(from: scheduleString)
+            
             
             return Tracker(
                 id: id,
                 name: name,
                 emoji: emoji,
                 color: color!,
+                category: category,
+                isPinned: false,
                 daysCount: daysCount.count,
                 schedule: schedule
             )

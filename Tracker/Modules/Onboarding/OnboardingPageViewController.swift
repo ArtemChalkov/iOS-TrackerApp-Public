@@ -27,7 +27,7 @@ final class OnboardingPageViewController: UIViewController {
     
     private lazy var enterButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = Colors.black
+        button.backgroundColor = .blackNight //Colors.black
         button.setTitle("Вот это технологии!", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         button.layer.cornerRadius = 16

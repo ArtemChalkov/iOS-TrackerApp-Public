@@ -10,7 +10,8 @@ final class CreateTrackerViewController: UIViewController {
 
     private var habitButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = .black
+        button.backgroundColor = .BlackDay
+        button.setTitleColor(.BlackNight, for: .normal)
         button.setTitle("Привычка", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         button.layer.cornerRadius = 16
@@ -23,7 +24,8 @@ final class CreateTrackerViewController: UIViewController {
     
     private var nonRegularButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = .black
+        button.backgroundColor = .BlackDay
+        button.setTitleColor(.BlackNight, for: .normal)
         button.setTitle("Нерегулярное событие", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         button.layer.cornerRadius = 16
@@ -57,12 +59,12 @@ private extension CreateTrackerViewController {
     
     @objc func habitButtonTapped() {
         
-        let newHabitVC = NewHabitViewController.init(trackType: .regular)
+        let newHabitVC = TrackerFormViewController.init(trackType: .habit)
         navigationController?.pushViewController(newHabitVC, animated: true)
     }
     
     @objc func nonRegularButtonTapped() {
-        let newHabitVC = NewHabitViewController.init(trackType: .unregular)
+        let newHabitVC = TrackerFormViewController.init(trackType: .unregularEvent)
         
         navigationController?.pushViewController(newHabitVC, animated: true)
     }

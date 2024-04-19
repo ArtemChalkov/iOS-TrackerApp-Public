@@ -6,6 +6,7 @@
 
 import UIKit
 import CoreData
+import YandexMobileMetrica
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -14,6 +15,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         DaysValueTransformer.register()
         UIColorValueTransformer.register() 
+        
+        AnalyticsService.activate()
         
         return true
     }

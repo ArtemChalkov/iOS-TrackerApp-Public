@@ -30,13 +30,17 @@ final class ScheduleViewController: UIViewController {
         tableView.clipsToBounds = true
         tableView.isScrollEnabled = false
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        tableView.separatorColor = .gray
         tableView.register(ScheduleCell.self, forCellReuseIdentifier: ScheduleCell.reuseId)
         return tableView
     }()
     
     private var doneButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = .black
+
+        button.backgroundColor = .BlackDay
+        button.setTitleColor(.BlackNight, for: .normal)
+        
         button.setTitle("Готово", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         button.layer.cornerRadius = 16

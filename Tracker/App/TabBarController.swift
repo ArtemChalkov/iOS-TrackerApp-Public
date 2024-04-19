@@ -8,19 +8,24 @@ import UIKit
 final class TabBarController: UITabBarController {
     
     private var trackersVC: TrackersViewController = {
-        let controller = TrackersViewController()
+        let trackerStore = TrackerStore()
+        let controller = TrackersViewController(trackerStore: trackerStore)
         let image = UIImage(named: "tracker")
         let selectedImage = UIImage(named: "tracker-selected")
-        let tabItem = UITabBarItem.init(title: "Трекеры", image: image, selectedImage: selectedImage)
+        
+        let title = "TabBar.trackers".localized
+        let tabItem = UITabBarItem.init(title: title, image: image, selectedImage: selectedImage)
         controller.tabBarItem = tabItem
         return controller
     }()
     
-    private var statisticsVC: StatisticsViewController = {
-        let controller = StatisticsViewController()
+    private var statisticsVC: StatisticViewController = {
+        let controller = StatisticViewController()
         let image = UIImage(named: "stats")
         let selectedImage = UIImage(named: "stats-selected")
-        let tabItem = UITabBarItem.init(title: "Статистика", image: image, selectedImage: selectedImage)
+
+        let title = "TabBar.statistics".localized
+        let tabItem = UITabBarItem.init(title: title, image: image, selectedImage: selectedImage)
         controller.tabBarItem = tabItem
         return controller
     }()
