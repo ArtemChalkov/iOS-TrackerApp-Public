@@ -3,16 +3,48 @@
 //  textfield-in-tableview
 //
 
-
 import UIKit
 
-
-
-class ColorsCell: UITableViewCell {
+class ColorContainerCell: UITableViewCell {
     
-    static let reuseId = "ColorsCell"
+    static let reuseId = "ColorContainerCell"
     
     var onColorCellSelected: ((Color)->Void)?
+    
+    var colorSelected: UIColor = UIColor() {
+        didSet {
+            
+            if let index = colors.firstIndex(where: { item in
+                
+                print(item.color.rgb(), colorSelected.rgb())
+                
+                let itemRGB = item.color.rgb()!
+                let selectedRGB = self.colorSelected.rgb()!
+                    
+                if itemRGB == selectedRGB {
+                    return true
+                } else {
+                    return false
+                }
+                //}
+                
+//                if item.color.equals(colorSelected) {
+//                    return true
+//                } else {
+//                    return false
+//                }
+                
+                
+            }) {
+                print("->", colors[index].id)
+                colors[index].isSelected = true
+            }
+        }
+    }
+    
+    func update(_ color: UIColor) {
+        self.colorSelected = color
+    }
     
     lazy var colors = Colors().items {
         didSet {
@@ -90,7 +122,7 @@ class ColorsCell: UITableViewCell {
     
 }
 
-extension ColorsCell: UICollectionViewDataSource {
+extension ColorContainerCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return colors.count
     }
@@ -109,7 +141,7 @@ extension ColorsCell: UICollectionViewDataSource {
     
 }
 
-extension ColorsCell: UICollectionViewDelegate {
+extension ColorContainerCell: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     

@@ -59,12 +59,12 @@ private extension CreateTrackerViewController {
     
     @objc func habitButtonTapped() {
         
-        let newHabitVC = TrackerFormViewController.init(trackType: .habit)
+        let newHabitVC = TrackerFormViewController.init(trackerType: .habit)
         navigationController?.pushViewController(newHabitVC, animated: true)
     }
     
     @objc func nonRegularButtonTapped() {
-        let newHabitVC = TrackerFormViewController.init(trackType: .unregularEvent)
+        let newHabitVC = TrackerFormViewController.init(trackerType: .unregularEvent)
         
         navigationController?.pushViewController(newHabitVC, animated: true)
     }

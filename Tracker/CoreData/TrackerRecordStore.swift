@@ -62,8 +62,6 @@ extension TrackerRecordStore {
             format: "%K == %@",
             #keyPath(TrackerRecordCoreData.recordId), record.id.uuidString
         )
-        
-        //
         let records = try context.fetch(request)
         guard let recordToRemove = records.first else { return }
         context.delete(recordToRemove)
@@ -77,12 +75,23 @@ extension TrackerRecordStore {
 
         let request = NSFetchRequest<TrackerRecordCoreData>(entityName: "TrackerRecordCoreData")
         request.returnsObjectsAsFaults = false
-        request.predicate = NSPredicate(format: "%K == %@", #keyPath(TrackerRecordCoreData.date), date as NSDate)
-        let recordsCoreData = try context.fetch(request)
+        
+        //Начало дня и конец дня
+        let calendar = Calendar(identifier: Calendar.Identifier.gregorian)
+        var components = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date)
+        components.hour = 00
+        components.minute = 00
+        components.second = 00
+        let startDate = calendar.date(from: components)
+        components.hour = 23
+        components.minute = 59
+        components.second = 59
+        let endDate = calendar.date(from: components)
 
+        request.predicate = NSPredicate(format: "date >= %@ AND date =< %@", argumentArray: [startDate!, endDate!])
+        let recordsCoreData = try context.fetch(request)
         //Parsing
         let records = try recordsCoreData.map { try makeTrackerRecord(from: $0) }
-        
         completedTrackers = Set(records)
         
         delegate?.didUpdateRecords(completedTrackers)

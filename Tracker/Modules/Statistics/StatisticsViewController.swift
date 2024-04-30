@@ -1,6 +1,6 @@
 //
 //  StatisticsViewController.swift
-//  Tracker
+
 
 
 import UIKit
@@ -17,7 +17,9 @@ final class StatisticViewController: UIViewController {
     
     // MARK: - Properties
     var statisticViewModel: StatisticViewModel?
+    
     private let trackerRecordStore = TrackerRecordStore()
+    
     private let completedTrackersView = StatisticView(name: NSLocalizedString("StatisticViewController.finishedTrackers", comment: "Finished trackers"))
     private let trackerStore = TrackerStore()
     
@@ -33,7 +35,9 @@ final class StatisticViewController: UIViewController {
         )
         configureViews()
         configureConstraints()
+        
         mainSpacePlaceholderStack.configurePlaceholderStack(imageName: "EmptyStat", text: (NSLocalizedString("StatisticViewController.nothingToAnalyze", comment: "")))
+        
         statisticViewModel?.onTrackersChange = { [weak self] trackers in
             guard let self else { return }
             self.checkContent(with: trackers)
@@ -53,8 +57,13 @@ final class StatisticViewController: UIViewController {
     }
     
     private func checkMainPlaceholderVisability() {
-        let isHidden = trackerStore.numberOfTrackers == 0
-        mainSpacePlaceholderStack.isHidden = !isHidden
+        
+        if let completedTrackers = try? trackerRecordStore.loadCompletedTrackers() {
+            let isHidden = completedTrackers.count == 0
+            mainSpacePlaceholderStack.isHidden = !isHidden
+        }
+        
+        
     }
     
     private func checkContent(with trackers: [TrackerRecord]) {

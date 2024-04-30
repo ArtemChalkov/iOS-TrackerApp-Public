@@ -22,6 +22,16 @@ final class TrackerCell: UICollectionViewCell {
     
     var onTrackerStatusChanged: ((Tracker, TrackerCell)->Void)?
     
+    
+    private var pinImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "pin")
+        //imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.widthAnchor.constraint(equalToConstant: 24).isActive = true
+        imageView.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        return imageView
+    }()
+    
     private var containerView: UIView = {
         let view = UIView()
         view.backgroundColor = .systemPink
@@ -87,7 +97,7 @@ final class TrackerCell: UICollectionViewCell {
             contentView.addSubview(view)
         }
         
-        [emojiButton, nameLabel].forEach {
+        [emojiButton, nameLabel, pinImageView].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             containerView.addSubview($0)
         }
@@ -113,17 +123,24 @@ final class TrackerCell: UICollectionViewCell {
         ])
         
         NSLayoutConstraint.activate([
+            pinImageView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 8),
+            pinImageView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -12),
+        ])
+        
+        NSLayoutConstraint.activate([
             dayLabel.topAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 16),
             dayLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 12),
         ])
         
         NSLayoutConstraint.activate([
-            plusButton.topAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 8),
-            plusButton.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -12),
+            plusButton.topAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 12),
+            plusButton.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -4),
         ])
     }
     
     func update(_ tracker: Tracker, counter: Int = 0, isComplete: Bool = false, calendarDate: Date, interaction: UIInteraction) {
+        
+        pinImageView.isHidden = !tracker.isPinned
         
         self.tracker = tracker
         self.days = counter
@@ -135,29 +152,12 @@ final class TrackerCell: UICollectionViewCell {
         
         containerView.addInteraction(interaction)
         
-        
         switchAddDayButton(to: isComplete)
     }
     
     @objc func plusButtonTapped(_ sender: UIButton) {
         
-        if calendarDate > Date() {
-            return
-        }
-//
-//        guard let tracker = tracker else { return }
-//        sender.isSelected = !sender.isSelected
-//        if sender.isSelected {
-//            sender.setImage(UIImage(systemName: "checkmark"), for: .normal)
-//            sender.layer.opacity = 0.3
-//        } else {
-//            sender.setImage(UIImage(systemName: "plus"), for: .normal)
-//            sender.layer.opacity = 1
-//        }
-//        let trackerStatus = sender.isSelected
-        
         guard let tracker else { return }
-        
         onTrackerStatusChanged?(tracker, self)
     }
     
@@ -184,10 +184,10 @@ final class TrackerCell: UICollectionViewCell {
 extension Int {
      func days() -> String {
          var ending: String!
-         if "1".contains("\(self % 10)")      { ending = "день" }
-         if "234".contains("\(self % 10)")    { ending = "дня"  }
-         if "567890".contains("\(self % 10)") { ending = "дней" }
-         if 11...14 ~= self % 100             { ending = "дней" }
+         if "1".contains("\(self % 10)")      { ending = "день".localized }
+         if "234".contains("\(self % 10)")    { ending = "дня".localized  }
+         if "567890".contains("\(self % 10)") { ending = "дней".localized }
+         if 11...14 ~= self % 100             { ending = "дней".localized }
          return "\(self) " + ending
      }
  }

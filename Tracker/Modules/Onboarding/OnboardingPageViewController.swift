@@ -18,6 +18,7 @@ final class OnboardingPageViewController: UIViewController {
     
     lazy var titleLabel: UILabel = {
         let label = UILabel()
+        label.textColor = Colors.black
         label.font = UIFont.systemFont(ofSize: 32, weight: .bold)
         label.numberOfLines = 0
         label.textAlignment = .center
@@ -27,7 +28,8 @@ final class OnboardingPageViewController: UIViewController {
     
     private lazy var enterButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = .blackNight //Colors.black
+        button.backgroundColor = Colors.black
+        button.setTitleColor(.white, for: .normal)
         button.setTitle("Вот это технологии!", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         button.layer.cornerRadius = 16

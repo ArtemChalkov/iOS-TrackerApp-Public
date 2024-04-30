@@ -15,6 +15,14 @@
 "Trackers.unPin" = "Открепить";
 "Trackers.cancel" = "Отменить";
 
+"Filters.AllTrackers" = "Все трекеры";
+"Filters.TrackersForToday" = "Трекеры на сегодня";
+"Filters.Completed" = "Завершенные";
+"Filters.NotCompleted" = "Не завершенные";
+
+"день" = "день";
+"дня" = "дня";
+"дней" = "дней" ;
 
 
 //TabBarController

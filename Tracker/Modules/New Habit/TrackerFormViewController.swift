@@ -49,12 +49,12 @@ final class TrackerFormViewController: UIViewController {
         }
     }
      
-    //Рандомная категория
-    private lazy var category: TrackerCategory? = trackerCategoryStore.categories.randomElement() {
-        didSet {
-            checkFormValidation()
-        }
-    }
+//    //Рандомная категория
+//    private lazy var category: TrackerCategory? = trackerCategoryStore.categories.randomElement() {
+//        didSet {
+//            checkFormValidation()
+//        }
+//    }
     
     //MARK: Services
     private let trackerCategoryStore = TrackerCategoryStore()
@@ -72,8 +72,8 @@ final class TrackerFormViewController: UIViewController {
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         tableView.showsVerticalScrollIndicator = false
         tableView.register(HabitNameCell.self, forCellReuseIdentifier: HabitNameCell.reuseId)
-        tableView.register(EmojisCell.self, forCellReuseIdentifier: EmojisCell.reuseId)
-        tableView.register(ColorsCell.self, forCellReuseIdentifier: ColorsCell.reuseId)
+        tableView.register(EmojiContainerCell.self, forCellReuseIdentifier: EmojiContainerCell.reuseId)
+        tableView.register(ColorContainerCell.self, forCellReuseIdentifier: ColorContainerCell.reuseId)
         tableView.register(CreateHabitCell.self, forCellReuseIdentifier: CreateHabitCell.reuseId)
         tableView.register(HabitTypeContainerCell.self, forCellReuseIdentifier: HabitTypeContainerCell.reuseId)
         return tableView
@@ -93,24 +93,30 @@ final class TrackerFormViewController: UIViewController {
     weak var delegate: TrackerFormViewControllerDelegate?
     
     // MARK: - Lifecycle
-    init(
-       ActionType: TrackerFormViewController.ActionType,
-       trackerType: TrackerType,
-       data: Tracker.Data?
-    ) {
+    init(ActionType: TrackerFormViewController.ActionType, trackerType: TrackerType, data: Tracker.Data?) {
         self.setAction = ActionType
         self.trackerType = trackerType
         self.data = data ?? Tracker.Data()
+        
+        switch trackerType {
+        case .habit:
+            habitTypes = ["Категория", "Расписание"]
+        case .unregularEvent:
+            habitTypes = ["Категория"]
+        }
+        
         super.init(nibName: nil, bundle: nil)
+        
+        self.checkFormValidation()
     }
     
-    init(trackType: TrackerType) {
-        self.trackerType = trackType
+    init(trackerType: TrackerType) {
+        self.trackerType = trackerType
         self.setAction = .add
         
         super.init(nibName: nil, bundle: nil)
         
-        switch trackType {
+        switch trackerType {
         case .habit:
             habitTypes = ["Категория", "Расписание"]
         case .unregularEvent:
@@ -134,7 +140,7 @@ extension TrackerFormViewController {
 //            isConfirmButtonEnabled = false
 //            return
 //        }
-        if category == nil || data.emoji == nil || data.color == nil {
+        if data.category == nil || data.emoji == nil || data.color == nil {
             isConfirmButtonEnabled = false
             return
         }
@@ -209,7 +215,8 @@ extension TrackerFormViewController: UITableViewDataSource {
                 }
                 
                 let schedule = data.schedule ?? []
-                let categoryName = category?.name ?? ""
+                let categoryName = data.category?.name ?? ""
+                
                 cell.update(habitTypes, schedule, categoryName)
                 
                 return cell
@@ -217,7 +224,7 @@ extension TrackerFormViewController: UITableViewDataSource {
   
             case .emojis:
                 
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: EmojisCell.reuseId, for: indexPath) as? EmojisCell else { return UITableViewCell() }
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: EmojiContainerCell.reuseId, for: indexPath) as? EmojiContainerCell else { return UITableViewCell() }
                 
                 cell.onEmojiCellSelected = { [weak self] emoji in
                 
@@ -225,11 +232,20 @@ extension TrackerFormViewController: UITableViewDataSource {
                     print("->", self?.data)
                 }
                 
+                if let emoji = data.emoji {
+                    cell.update(emoji)
+                }
+                
                 return cell
                 
             case .colors:
                 
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: ColorsCell.reuseId, for: indexPath) as? ColorsCell else { return UITableViewCell() }
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: ColorContainerCell.reuseId, for: indexPath) as? ColorContainerCell else { return UITableViewCell() }
+                
+                if let color = self.data.color {
+                    print(color.rgb())
+                    cell.update(color)
+                }
                 
                 cell.onColorCellSelected = { [weak self] color in
                     
@@ -269,6 +285,8 @@ extension TrackerFormViewController {
     
     func categoryCellSelected() {
         
+        let category = data.category
+        print(category)
         let setCategoriesViewController = SetCategoriesViewController(selectedCategory: category)
         setCategoriesViewController.delegate = self
         
@@ -304,7 +322,7 @@ extension TrackerFormViewController {
     func addTracker() {
         print("->", "Create")
         
-        guard let category, let emoji = data.emoji, let color = data.color else { return }
+        guard let category = data.category, let emoji = data.emoji, let color = data.color else { return }
 
         let newTracker = Tracker(
             name: data.name,
@@ -366,8 +384,31 @@ extension TrackerFormViewController {
  extension TrackerFormViewController: SetCategoriesViewControllerDelegate {
      
      func didConfirm(_ category: TrackerCategory) {
-         self.category = category
+         self.data.category = category
          tableView.reloadData()
          dismiss(animated: true)
      }
  }
+
+extension UIColor {
+
+    func rgb() -> Int? {
+        var fRed : CGFloat = 0
+        var fGreen : CGFloat = 0
+        var fBlue : CGFloat = 0
+        var fAlpha: CGFloat = 0
+        if self.getRed(&fRed, green: &fGreen, blue: &fBlue, alpha: &fAlpha) {
+            let iRed = Int(fRed * 255.0)
+            let iGreen = Int(fGreen * 255.0)
+            let iBlue = Int(fBlue * 255.0)
+            let iAlpha = Int(fAlpha * 255.0)
+
+            //  (Bits 24-31 are alpha, 16-23 are red, 8-15 are green, 0-7 are blue).
+            let rgb = (iAlpha << 24) + (iRed << 16) + (iGreen << 8) + iBlue
+            return rgb
+        } else {
+            // Could not extract RGBA components:
+            return nil
+        }
+    }
+}

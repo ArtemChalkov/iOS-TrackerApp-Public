@@ -6,6 +6,7 @@
 import UIKit
 
 struct Color {
+    let id: Int
     let color: UIColor
     var isSelected: Bool
 }
@@ -13,24 +14,24 @@ struct Color {
 struct Colors {
     
     var items = [
-        Color(color: colors[0], isSelected: false),
-        Color(color: colors[1], isSelected: false),
-        Color(color: colors[2], isSelected: false),
-        Color(color: colors[3], isSelected: false),
-        Color(color: colors[4], isSelected: false),
-        Color(color: colors[5], isSelected: false),
-        Color(color: colors[6], isSelected: false),
-        Color(color: colors[7], isSelected: false),
-        Color(color: colors[8], isSelected: false),
-        Color(color: colors[9], isSelected: false),
-        Color(color: colors[10], isSelected: false),
-        Color(color: colors[11], isSelected: false),
-        Color(color: colors[12], isSelected: false),
-        Color(color: colors[13], isSelected: false),
-        Color(color: colors[14], isSelected: false),
-        Color(color: colors[15], isSelected: false),
-        Color(color: colors[16], isSelected: false),
-        Color(color: colors[17], isSelected: false)
+        Color(id: 1, color: colors[0], isSelected: false),
+        Color(id: 2, color: colors[1], isSelected: false),
+        Color(id: 3, color: colors[2], isSelected: false),
+        Color(id: 4, color: colors[3], isSelected: false),
+        Color(id: 5, color: colors[4], isSelected: false),
+        Color(id: 6, color: colors[5], isSelected: false),
+        Color(id: 7, color: colors[6], isSelected: false),
+        Color(id: 8, color: colors[7], isSelected: false),
+        Color(id: 9, color: colors[8], isSelected: false),
+        Color(id: 10, color: colors[9], isSelected: false),
+        Color(id: 11, color: colors[10], isSelected: false),
+        Color(id: 12, color: colors[11], isSelected: false),
+        Color(id: 13, color: colors[12], isSelected: false),
+        Color(id: 14, color: colors[13], isSelected: false),
+        Color(id: 15, color: colors[14], isSelected: false),
+        Color(id: 16, color: colors[15], isSelected: false),
+        Color(id: 17, color: colors[16], isSelected: false),
+        Color(id: 18, color: colors[17], isSelected: false)
     ]
     
     static let colors = [
@@ -71,9 +72,7 @@ extension Colors {
 }
 
 extension UIColor {
-    
-    
-    
+
     static var BlackDay: UIColor { UIColor(named: "Black [day]") ?? UIColor.black }
     static var BlackNight: UIColor { UIColor(named: "Black [night]") ?? UIColor.white }
     static var WhiteDay: UIColor { UIColor(named: "White [day]") ?? UIColor.white }

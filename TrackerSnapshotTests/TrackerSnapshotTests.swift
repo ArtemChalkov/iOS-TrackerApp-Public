@@ -22,6 +22,10 @@ final class TrackerSnapshotTests: XCTestCase {
 
 extension TrackerSnapshotTests {
     private struct StubTrackerStore: TrackerStoreProtocol {
+        var completedTrackers: Set<TrackerRecord> = []
+        
+        var completeStatus: CompleteStatus = .none
+        
         var delegate: TrackerStoreDelegate?
         
         var numberOfTrackers: Int = 3
@@ -33,7 +37,7 @@ extension TrackerSnapshotTests {
                 Tracker(
                     name: "Программирование",
                     emoji: "🙂",
-                    color: .bunchOfSChoices[safe: 16]!,
+                    color: UIColor.bunchOfSChoices[16],
                     category: category,
                     isPinned: true,
                     daysCount: 5,
@@ -44,7 +48,7 @@ extension TrackerSnapshotTests {
                 Tracker(
                     name: "Английский язык",
                     emoji: "🤔",
-                    color: .bunchOfSChoices[safe: 14]!,
+                    color: UIColor.bunchOfSChoices[14],
                     category: category,
                     isPinned: false,
                     daysCount: 1,
@@ -53,7 +57,7 @@ extension TrackerSnapshotTests {
                 Tracker(
                     name: "Стрельба из лука",
                     emoji: "😪",
-                    color: .bunchOfSChoices[safe: 9]!,
+                    color: UIColor.bunchOfSChoices[9],
                     category: category,
                     isPinned: false,
                     daysCount: 2,

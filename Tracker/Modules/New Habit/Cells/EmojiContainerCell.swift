@@ -5,11 +5,26 @@
 
 import UIKit
 
-class EmojisCell: UITableViewCell {
+class EmojiContainerCell: UITableViewCell {
     
-    static let reuseId = "EmojisCell"
+    static let reuseId = "EmojiContainerCell"
     
     var onEmojiCellSelected: ((Emoji)->Void)?
+    
+    var emojiSelected: String = "" {
+        didSet {
+            
+            if let index = emojis.firstIndex(where: { $0.symbol == emojiSelected }) {
+                emojis[index].isSelected = true
+            }
+            
+            collectionView.reloadData()
+        }
+    }
+    
+    func update(_ emoji: String) {
+        self.emojiSelected = emoji
+    }
     
     lazy var emojis = Emojis().items {
         didSet {
@@ -29,8 +44,6 @@ class EmojisCell: UITableViewCell {
         
         let layout = UICollectionViewFlowLayout()
         //layout.headerReferenceSize = CGSize(width: self.view.frame.width, height: 50) // Размер заголовка секции
-        
-        
         let screenWidth = UIScreen.main.bounds.width
         let itemWidth = (screenWidth - (2 * 19) - (5 * 16))
         print(itemWidth / 5)
@@ -88,7 +101,7 @@ class EmojisCell: UITableViewCell {
     
 }
 
-extension EmojisCell: UICollectionViewDataSource {
+extension EmojiContainerCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return emojis.count
     }
@@ -97,7 +110,7 @@ extension EmojisCell: UICollectionViewDataSource {
         
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EmojisCollectionCell.reuseId, for: indexPath) as? EmojisCollectionCell else { return UICollectionViewCell() }
         
-        let emoji = emojis[indexPath.item]
+        var emoji = emojis[indexPath.item]
         
         cell.update(emoji)
         
@@ -105,7 +118,7 @@ extension EmojisCell: UICollectionViewDataSource {
     }
 }
 
-extension EmojisCell: UICollectionViewDelegate {
+extension EmojiContainerCell: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     

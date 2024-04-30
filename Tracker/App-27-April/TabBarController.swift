@@ -20,7 +20,11 @@ final class TabBarController: UITabBarController {
     }()
     
     private var statisticsVC: StatisticViewController = {
+
         let controller = StatisticViewController()
+        let statisticViewModel = StatisticViewModel()
+        controller.statisticViewModel = statisticViewModel
+        
         let image = UIImage(named: "stats")
         let selectedImage = UIImage(named: "stats-selected")
 

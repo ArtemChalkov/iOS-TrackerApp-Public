@@ -1,9 +1,6 @@
 //
 //  StatisticsView.swift
-//  iOS-TrackerApp
-//
-//  Created by Andy Kruch on 26.09.23.
-//
+
 
 import UIKit
 
