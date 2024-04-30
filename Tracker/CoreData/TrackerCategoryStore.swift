@@ -7,7 +7,10 @@ import UIKit
 import CoreData
 
 enum StoreError: Error {
-    case decodeError, fetchCategoryError
+    case decodeError
+    case fetchCategoryError
+    case deleteError
+    case pinError
 }
 
 protocol TrackerCategoryStoreDelegate: AnyObject {

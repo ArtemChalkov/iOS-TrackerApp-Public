@@ -11,7 +11,7 @@ final class CategoryCell: UITableViewCell {
     
     private let label: UILabel = {
         let label = UILabel()
-        label.textColor = Colors.black
+        label.textColor = .BlackDay //Colors.black
         label.font = UIFont.systemFont(ofSize: 17)
         return label
     }()

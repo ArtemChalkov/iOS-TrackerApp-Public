@@ -1,0 +1,40 @@
+/* 
+  Localizable.strings
+  Tracker
+
+*/
+
+// TrackersViewController
+"Trackers.title" = "Трекеры";
+"Trackers.search" = "Поиск";
+"Trackers.whatWeWillTrace" = "Что будем отслеживать?";
+"Trackers.filters" = "Фильтры";
+"Trackers.nothingFound" = "Ничего не найдено";
+"Trackers.deleteTracker" = "Уверены что хотите удалить трекер?";
+"Trackers.pin" = "Закрепить";
+"Trackers.unPin" = "Открепить";
+"Trackers.cancel" = "Отменить";
+
+"Filters.AllTrackers" = "Все трекеры";
+"Filters.TrackersForToday" = "Трекеры на сегодня";
+"Filters.Completed" = "Завершенные";
+"Filters.NotCompleted" = "Не завершенные";
+
+"день" = "день";
+"дня" = "дня";
+"дней" = "дней" ;
+
+
+//TabBarController
+"TabBar.trackers" = "Трекеры";
+"TabBar.statistics" = "Статистика";
+
+// StatisticViewController
+"StatisticViewController.title" = "Статистика";
+"StatisticViewController.nothingToAnalyze" = "Анализировать пока нечего";
+"StatisticViewController.finishedTrackers" = "Трекеров завершено";
+
+"SetCategories.edit" = "Редактировать";
+"SetCategories.delete" = "Удалить";
+
+"TrackerForm.cancel" = "Отменить";

@@ -62,50 +62,54 @@ extension TrackerRecordStore {
             format: "%K == %@",
             #keyPath(TrackerRecordCoreData.recordId), record.id.uuidString
         )
-        
-        //
         let records = try context.fetch(request)
-        
         guard let recordToRemove = records.first else { return }
-        
         context.delete(recordToRemove)
-        
         try context.save()
-        
         completedTrackers.remove(record)
-        
         delegate?.didUpdateRecords(completedTrackers)
     }
     
     //MARK: READ
     func loadCompletedTrackers(by date: Date) throws {
-        
+
         let request = NSFetchRequest<TrackerRecordCoreData>(entityName: "TrackerRecordCoreData")
-        
         request.returnsObjectsAsFaults = false
         
-        request.predicate = NSPredicate(format: "%K == %@", #keyPath(TrackerRecordCoreData.date), date as NSDate)
-        
+        //Начало дня и конец дня
+        let calendar = Calendar(identifier: Calendar.Identifier.gregorian)
+        var components = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date)
+        components.hour = 00
+        components.minute = 00
+        components.second = 00
+        let startDate = calendar.date(from: components)
+        components.hour = 23
+        components.minute = 59
+        components.second = 59
+        let endDate = calendar.date(from: components)
+
+        request.predicate = NSPredicate(format: "date >= %@ AND date =< %@", argumentArray: [startDate!, endDate!])
         let recordsCoreData = try context.fetch(request)
-        
-        
-        
         //Parsing
         let records = try recordsCoreData.map { try makeTrackerRecord(from: $0) }
-        
         completedTrackers = Set(records)
         
         delegate?.didUpdateRecords(completedTrackers)
     }
     
+    func loadCompletedTrackers() throws -> [TrackerRecord] {
+        let request = NSFetchRequest<TrackerRecordCoreData>(entityName: "TrackerRecordCoreData")
+        let recordsCoreData = try context.fetch(request)
+        let records = try recordsCoreData.map { try makeTrackerRecord(from: $0) }
+        return records
+    }
+    
     //MARK: PARSE
     private func makeTrackerRecord(from coreData: TrackerRecordCoreData) throws -> TrackerRecord {
-        
-        
+    
         print(coreData.recordId)
         print(coreData.date)
         print(coreData.tracker)
-        
         
         if let idString = coreData.recordId,
            let id = UUID(uuidString: idString),
@@ -117,8 +121,5 @@ extension TrackerRecordStore {
         } else {
             throw StoreError.decodeError
         }
-        
-        
-       
     }
 }
